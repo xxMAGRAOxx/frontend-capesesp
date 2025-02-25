@@ -1,0 +1,25 @@
+<form class="mr-12" fxLayout="row" fxLayoutAlign="start start" [formGroup]="cruzzyForm" [style]="data.style">
+    <mat-form-field [appearance]="data.appearance ? data.appearance : 'outline'"
+        [floatLabel]="data.floatLabel ? data.floatLabel : 'always'" class="w-100-p">
+        <mat-label>{{ data.label | translate }}</mat-label>
+        <input #input *ngIf="!data.isCurrency" title="{{ (data.hint ? data.hint : data.label) | translate }}"
+            [name]="data.formControlName" [formControlName]="data.formControlName"
+            [type]="data.type ? data.type : 'text'" matInput [mask]="data.mask ? data.mask : ''"
+            [options]="data.options">
+        <input #input *ngIf="data.isCurrency" title="{{ (data.hint ? data.hint : data.label) | translate }}"
+            [name]="data.formControlName" [formControlName]="data.formControlName" matInput currencyMask
+            [options]="{ thousands: thousandsSeparator, decimal: decimalPoint, max: limit, min: 0 }">
+
+        <mat-error *ngIf="cruzzyForm.get(data.formControlName).invalid && data.showError">
+            <ng-container *ngIf="cruzzyForm.get(data.formControlName).hasError('required')">
+                {{'lbl_obrigatorio' | translate}}
+            </ng-container>
+            <ng-container *ngIf="cruzzyForm.get(data.formControlName).hasError('min')">
+                {{'lbl_quantidadeMinima' | translate}}{{cruzzyForm.get(data.formControlName).errors.min.min}}
+            </ng-container>
+            <ng-container *ngIf="cruzzyForm.get(data.formControlName).hasError('max')">
+                {{'lbl_quantidadeMaxima' | translate}} {{cruzzyForm.get(data.formControlName).errors.max.max}}
+            </ng-container>
+        </mat-error>
+    </mat-form-field>
+</form>

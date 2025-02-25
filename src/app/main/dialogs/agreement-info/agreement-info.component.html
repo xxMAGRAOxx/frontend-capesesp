@@ -1,0 +1,72 @@
+<div class="dialog-content-wrapper">
+	<mat-toolbar class="mat-accent m-0" style="max-height: 56px;">
+		<mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+			<span class="title dialog-title">{{'lbl_detalhes' | translate }}</span>
+		</mat-toolbar-row>
+	</mat-toolbar>
+	<mat-dialog-content class="p-24 pb-0 m-0 pt-8" style="height: 100%;">
+		<div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center" class="bordered"
+			style="min-height: 60px;">
+			<div *ngIf="_data.image_url" class="w-20-p" fxLayoutAlign="center center"
+				style="min-width: 140px; margin-bottom: 6px; margin-right: 12px;">
+				<img src="{{_data.image_url ? _data.image_url : defaultImage}}" class="_data-logo">
+			</div>
+			<div *ngIf="_data.name" class="agreement-name" fxLayoutAlign="center">
+				{{_data.name}}
+			</div>
+		</div>
+
+		<div *ngIf="_data.type" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center"
+			class="pt-16 pb-8 info">
+			<div *ngIf="_data.type === 'CURRENCY'" class="w-100-p">
+				<div class="message-box info" fxFlex fxLayout="row" fxLayoutGap="5px">
+					<mat-icon fxFlex="5" class="mr-8">card_membership</mat-icon>
+					<div fxFlex>
+						{{(_data.advantage | myCurrency)}}
+					</div>
+				</div>
+			</div>
+			<div *ngIf="_data.type === 'PERCENT'" class="w-100-p">
+				<div class="message-box info" fxFlex fxLayout="row" fxLayoutGap="5px">
+					<mat-icon fxFlex="5" class="mr-8">card_membership</mat-icon>
+					<div fxFlex>
+						{{_data.advantage + ' %'}}
+					</div>
+				</div>
+			</div>
+			<div *ngIf="_data.type === 'OTHER'" class="w-100-p">
+				<div class="message-box info" fxFlex fxLayout="row" fxLayoutGap="5px">
+					<mat-icon fxFlex="5" class="mr-8">card_membership</mat-icon>
+					<div fxFlex>{{_data.advantage}}</div>
+				</div>
+			</div>
+		</div>
+		<div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center" class="pt-16 pb-8 info">
+			<div *ngIf="_data.provider" class="w-50-p">
+				<mat-label>{{ 'lbl_fornecedor' | translate }}</mat-label><br>
+				{{ _data.provider }}
+			</div>
+			<div *ngIf="_data.agreement_category_name" class="w-50-p">
+				<mat-label>{{ 'lbl_categoria' | translate }}</mat-label><br>
+				{{ _data.agreement_category_name }}
+			</div>
+		</div>
+		<div *ngIf="_data.description" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center"
+			class="py-8 info">
+			<div class="w-100-p">
+				<mat-label>Mais Informações</mat-label><br>
+				<div [innerHTML]="_data.description"></div>
+			</div>
+		</div>
+	</mat-dialog-content>
+	<div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+		<button mat-raised-button color="accent" (click)="confirm()" class="mr-4 save-button" aria-label="SAVE"
+			class="mat-raised-button mat-button-base mr-4 mobile-button-100">
+			{{ 'btn_ok' | translate }}
+		</button>
+		<button *ngIf="_data.external_url" mat-raised-button color="" (click)="openUrl(_data.external_url)"
+			class="mr-4 save-button" aria-label="SAVE" class="mat-raised-button mat-button-base mr-4 mobile-button-100">
+			{{ 'lbl_saibaMais' | translate }}
+		</button>
+	</div>
+</div>

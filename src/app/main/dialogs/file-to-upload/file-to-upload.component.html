@@ -1,0 +1,30 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{ 'lbl_importarBloqueioEscolhaBeneficios' | translate }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div class="p-16">
+        <div class="message-box warning mb-16">
+            {{ 'lbl_explicacaoImportacaoBloqueados' | translate }}
+        </div>
+        <form [formGroup]="fileToUploadForm">
+            <div fxLayout="column" fxLayoutAlign="start start" class="mb-16 pt-6">
+                <input formControlName="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    name="file" ng-value="fileToUpload" (change)="fileChange($event)" value="{{fileToUpload}}"
+                    file-model="fileToUpload" set-file-data="fileToUpload = value;" type="file" id="my_file" />
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button mat-raised-button color="accent"
+            class="save-button mat-raised-button mat-button-base mr-4 mobile-button-100" (click)="importFile()"
+            aria-label="SAVE" [disabled]="!allowImport">
+            <span>{{ 'btn_importar' | translate }}</span>
+        </button>
+        <button mat-raised-button class="save-button mat-raised-button mat-button-base mr-4 mobile-button-100"
+            (click)="matDialogRef.close()" aria-label="Close" matTooltip="Close">
+            <span>{{ 'btn_cancelar' | translate }}</span>
+        </button>
+    </div>
+</div>

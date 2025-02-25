@@ -1,0 +1,35 @@
+<div class="dialog-content-wrapper">
+	<mat-toolbar class="mat-accent m-0">
+		<mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+			<span class="title dialog-title">{{title | translate }}</span>
+		</mat-toolbar-row>
+	</mat-toolbar>
+	<div mat-dialog-content class="p-24 m-0 pt-8" fusePerfectScrollbar
+		[fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+		<form class="pt-16 internal-form" [formGroup]="dataForm">
+			<div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="start start">
+				<div class="w-100-p">
+					<cruzzy-select  id="email_forward_audience" appendTo="#email_forward_audience"
+						notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+						[clearable]="false" formControlName="email_forward_audience" name="email_forward_audience"
+						placeholder="{{ 'lbl_reenviarPara' | translate }}"
+						title="{{ 'hint_reenviarPara' | translate }}">
+						<ng-option *ngFor="let audience of options" [value]="audience.key">{{
+							audience.mnemonic | translate }}
+						</ng-option>
+					</cruzzy-select>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+		<button mat-raised-button color="accent" [disabled]="dataForm.invalid" (click)="confirm()" class="mr-4 save-button"
+			aria-label="SAVE" class="mat-raised-button mat-button-base mr-4">
+			<mat-icon>check_circle_outline</mat-icon> {{ buttonConfirm | translate }}
+		</button>
+		<button mat-raised-button (click)="cancel()" class="save-button" aria-label="SAVE"
+			class="mat-raised-button mr-4">
+			{{ buttonCancel | translate }}
+		</button>
+	</div>
+</div>

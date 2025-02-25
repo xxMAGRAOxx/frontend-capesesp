@@ -1,0 +1,140 @@
+<div id="product" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/apps/demandas/lista'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{product.descricao}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        Nova Demanda
+                    </div>
+                    <div *ngIf="pageType !=='new'" class="subtitle secondary-text">
+                        <span>Detalhes</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button
+                    matRipple
+                    class="save-product-button"
+                    [disabled]="productForm.invalid"
+                    *ngIf="pageType ==='new'" (click)="addProduct()">
+                <span>CRIAR</span>
+            </button>
+
+            <button mat-raised-button
+                    matRipple
+                    class="save-product-button"
+                    [disabled]="productForm.invalid || productForm.pristine"
+                    *ngIf="pageType ==='edit'" (click)="saveProduct()">
+                <span>Salvar</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="productForm" [formGroup]="productForm" class="product w-100-p" fxLayout="column" fxFlex>
+
+                    <mat-tab-group>
+
+                        <mat-tab label="Informações">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Descrição</mat-label>
+                                    <input matInput placeholder="Descrição"
+                                           name="descricao"
+                                           formControlName="descricao"
+                                           required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Descrição Web</mat-label>
+                                    <input matInput placeholder="Descrição Web"
+                                           name="descriweb"
+                                           formControlName="descriweb"
+                                           required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Tipo</mat-label>
+                                    <mat-select formControlName="tipo" placeholder="Tipo *" required>
+                                        <mat-option *ngFor="let tipo of tipos" [value]="tipo?.codigo">
+                                            {{ tipo?.descricao }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Grupo</mat-label>
+                                    <mat-select formControlName="grupo" placeholder="Grupo *" required>
+                                        <mat-option *ngFor="let grupo of grupos" [value]="grupo?.codigo">
+                                            {{ grupo?.descricao }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Área</mat-label>
+                                    <mat-select formControlName="area" placeholder="Área *" required>
+                                        <mat-option *ngFor="let area of areas" [value]="area?.codigo">
+                                            {{ area?.descricao }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Atendimento</mat-label>
+                                    <mat-select formControlName="atendimento" placeholder="Atendimento *"  required>
+                                        <mat-option *ngFor="let atendimento of atendimentos" [value]="atendimento?.codigo">
+                                            {{ atendimento?.descricao }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Status</mat-label>
+                                    <mat-select formControlName="ativo" placeholder="Status *"  required>
+                                        <mat-option *ngFor="let status of statuses" [value]="status?.codigo">
+                                            {{ status?.descricao }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </form>
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

@@ -1,0 +1,6 @@
+<div class="mr-12" fxLayout="row" fxLayoutAlign="start start" [formGroup]="cruzzyForm">
+    <mat-checkbox [class]="data.class" [name]="data.formControlName" [formControlName]="data.formControlName"
+        [labelPosition]="data.labelPosition ? data.labelPosition : 'before'"
+        [disabled]="data.disabled ? data.disabled : false" [checked]="data.checked">{{ data.label | translate }}
+    </mat-checkbox>
+</div>

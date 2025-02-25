@@ -1,0 +1,131 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar *ngIf="data.title" [ngClass]="data.title_class">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{data.title | translate }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-12 m-0" fusePerfectScrollbar
+        [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+        <div [style]="data.custom_css" fxLayout="column" fxLayoutAlign="start start">
+            <div *ngIf="data.message" class="p-24 m-0">
+                {{ data.message | translate }}
+            </div>
+            <div *ngIf="data.message_box" class="message-box info mb-4 mt-4 w-100-p">
+                {{ data.message_box | translate }}
+            </div>
+            <form
+                *ngIf="data.cruzzy_tree_view || data.cruzzy_inner_html || data.cruzzy_text_area ||  data.cruzzy_html_editor || data.cruzzy_input || data.cruzzy_select || data.cruzzy_checkbox || data.cruzzy_file"
+                [formGroup]="data.dataForm" class="p-8 pb-0 mb-0 w-100-p internal-form" fxLayout="column">
+                <div *ngIf="data.cruzzy_tree_view" fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="start start">
+                    <div class="w-100-p treeview">
+                        <mat-label class="placeholder">{{ data.cruzzy_tree_view.title | translate }}
+                        </mat-label>
+                        <cruzzy-dropdown-treeview [config]="_treeViewUtils.config"
+                            [items]="data.cruzzy_tree_view.company_items" (selectedChange)="onSelectedChange($event)"
+                            [disabled]="data.cruzzy_tree_view.diabled"
+                            title="{{ data.cruzzy_tree_view.hint | translate }}">
+                        </cruzzy-dropdown-treeview>
+                    </div>
+                </div>
+                <div *ngIf="data.cruzzy_select" class="w-100-p">
+                    <div *ngFor="let select of data.cruzzy_select" fxLayout="column" fxLayout.gt-sm="row"
+                        fxLayoutAlign="start start">
+                        <div class="w-100-p">
+                            <cruzzy-select (removeFromList)="_generalServices.setNullForm(data.dataForm, $event)" [id]="select.formControlName" [appendTo]="'#' + select.formControlName"
+                                notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline"
+                                floatLabel="always" [name]="select.formControlName" [clearable]="select.clearable"
+                                [closeOnSelect]="select.closeOnSelect" [multiple]="select.multiple"
+                                [formControlName]="select.formControlName" placeholder="{{  select.label | translate }}"
+                                title="{{ select.hint | translate }}">
+                                <ng-option *ngFor="let item of select.options" [value]="item.id">
+                                    <img *ngIf="select.show_option_images" src='{{item.image}}'>
+                                    {{item.name | translate}}
+                                </ng-option>
+                            </cruzzy-select>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="data.cruzzy_input" fxLayout="column" fxLayoutAlign="start start">
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                        <mat-label>{{ data.cruzzy_input.label | translate }}</mat-label>
+                        <input name="data.cruzzy_input.formControlName"
+                            [formControlName]="data.cruzzy_input.formControlName" type="text" matInput>
+                    </mat-form-field>
+                    <cruzzy-html-editor [formGroup]="data.cruzzy_html_editor.dataForm"
+                        [control]="data.cruzzy_html_editor.formControlName"></cruzzy-html-editor>
+                </div>
+
+                <div *ngIf="data.cruzzy_text_area" fxLayout="column" fxLayoutAlign="start start">
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                        <mat-label>{{ data.cruzzy_text_area.label | translate }}</mat-label>
+                        <textarea name="{{data.cruzzy_text_area.formControlName}}"
+                            [formControlName]="data.cruzzy_text_area.formControlName"
+                            [rows]="data.cruzzy_text_area.rows" matInput></textarea>
+                    </mat-form-field>
+                </div>
+                <!-- Ajuda campos variáveis -->
+                <div *ngIf="data.cruzzy_inner_html" fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="start start">
+                    <div class="w-100-p">
+                        <mat-accordion multi>
+                            <mat-expansion-panel [expanded]="false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        <mat-icon>live_help</mat-icon>{{
+                                        'lbl_camposVariaveis' |
+                                        translate }}
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <div>
+                                    <div class="pt-8">
+                                        {{ 'msg_camposVariaveis' | translate }}
+                                    </div>
+                                    <div class="pt-8" [innerHTML]="(data.cruzzy_inner_html.dataForm.get('type').value == 'ADMISSION' ?
+                                    'msg_descricaoCamposVariaveisAdmissao' :
+                                     data.cruzzy_inner_html.dataForm.get('type').value == 'ENROLLMENT' ?
+                                     'msg_descricaoCamposVariaveisEmailPeriodoEleicao' :
+                                      data.cruzzy_inner_html.dataForm.get('type').value == 'BENEFIT_PACKAGES' ? 
+                                      'msg_descricaoCamposVariaveisTermoAdesao' :
+                                      'msg_descricaoCamposVariaveisAdmissao') | translate">
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                </div>
+                <div *ngIf="data.cruzzy_checkbox" fxLayout="row" fxLayout.gt-sm="row" fxLayoutAlign="start start"
+                    class="p-5">
+                    <div class="w-100-p" fxLayout="column" fxLayoutAlign="start start">
+                        <!-- mat-checkbox -->
+                        <mat-checkbox *ngFor="let checkbox of data.cruzzy_checkbox" [name]="checkbox.formControlName"
+                            [formControlName]="checkbox.formControlName" [labelPosition]="checkbox.labelPosition"
+                            [disabled]="checkbox.disabled" [checked]="checkbox.checked">
+                            {{ checkbox.label | translate }}
+                        </mat-checkbox>
+                    </div>
+                </div>
+
+                <div *ngIf="data.cruzzy_file" fxLayout="column" fxLayoutAlign="start start">
+                    <input [formControlName]="data.cruzzy_file.formControlName" [accept]="data.cruzzy_file.accept_types"
+                        [name]="data.cruzzy_file.formControlName" ng-value="fileToUpload"
+                        (change)="data.cruzzy_file.change($event)" value="{{fileToUpload}}" file-model="fileToUpload"
+                        set-file-data="fileToUpload = value;" type="file" id="my_file" />
+                </div>
+            </form>
+
+            <mat-list *ngIf="data.cruzzy_list" fxLayout="column" fxLayoutAlign="start start">
+                <div mat-subheader>{{data.cruzzy_list.message | translate}}</div>
+                <mat-list-item *ngFor="let item of data.cruzzy_list.options">
+                    <mat-icon mat-list-icon>{{data.cruzzy_list.icon}}</mat-icon>
+                    <div mat-line>{{ item[data.cruzzy_list.name] }}</div>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </div>
+    <div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button *ngFor="let button of data.buttons" mat-raised-button [color]="button.color"
+            [disabled]="button.disabled()" [ngClass]="button.class" (click)="closeModal(button.action)">
+            <mat-icon *ngIf="button.icon">{{button.icon}}</mat-icon>
+            {{ button.label | translate }}
+        </button>
+    </div>
+</div>

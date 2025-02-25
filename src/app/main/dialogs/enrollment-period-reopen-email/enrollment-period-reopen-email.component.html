@@ -1,0 +1,53 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{title | translate }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar style="min-height: 250px;"
+        [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+        <img src="{{ image }}" alt="{{ image }}" class="imagem-confirm" *ngIf="image" />
+        {{messageBox ? '':message}}
+        <div *ngIf="messageBox" [class]="'message-box ' + messageBox ">
+            <mat-icon class="">{{messageIcon}}</mat-icon>
+            <span class="ml-16">{{ message | translate}}
+                <div class="mt-12" *ngFor="let link of links" (click)="actionLink(link.id); confirm()">
+                    <span style="cursor: pointer; text-decoration: underline;">{{link.name}}</span>
+                </div>
+            </span>
+        </div>
+        <div class="mt-20" *ngIf="!messageBox && links && links.length > 0">
+            <div *ngFor="let link of links" (click)="actionLink(link.id); confirm()">
+                <span style="cursor: pointer; text-decoration: underline;">{{link.name}}</span>
+            </div>
+        </div>
+        <form [formGroup]="dataForm" class="p-8 w-100-p internal-form" fxLayout="column">
+            <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start start" class="w-100-p">
+                <div class="w-100-p">
+                    <cruzzy-select dropdownPosition="bottom" id="resendEmailType" appendTo="#resendEmailType"
+                        notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+                        formControlName="resendEmailType" name="resendEmailType"
+                        placeholder="{{ 'btn_ResendEmail' | translate }}" title="{{ 'btn_ResendEmail' | translate }}">
+                        <ng-option value="lbl_enviarNovamenteTodos">{{ 'lbl_enviarNovamenteTodos' |
+                            translate
+                            }}</ng-option>
+                        <ng-option value="lbl_enviarNovamenteSomenteQuemNaoRecebeu">{{
+                            'lbl_enviarNovamenteSomenteQuemNaoRecebeu' |
+                            translate }}</ng-option>
+                        <ng-option value="lbl_naoEnviar">{{ 'lbl_naoEnviar' | translate }}</ng-option>
+                    </cruzzy-select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button mat-raised-button color="accent" (click)="confirm()" class="mr-4 save-button" aria-label="SAVE"
+            class="mat-raised-button mat-button-base mr-4 mobile-button-100" [disabled]="!dataForm.valid">
+            {{ 'btn_ok' | translate }}
+        </button>
+        <button mat-raised-button (click)="cancel()" class="save-button" aria-label="SAVE"
+            class="mat-raised-button mobile-button-100">
+            {{ 'btn_cancelar' | translate }}
+        </button>
+    </div>
+</div>

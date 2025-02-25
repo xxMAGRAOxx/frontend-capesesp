@@ -1,0 +1,53 @@
+@import "src/@fuse/scss/fuse";
+
+.message-action-dialog {
+    .mat-dialog-container {
+        padding: 0;
+    }
+
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint('gt-xs') {
+        width: 35vw;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mat-form-field-wrapper {
+        padding-bottom: 0.3em;
+    }
+
+    .mat-list-base .mat-list-item.mat-list-item-with-avatar, .mat-list-base .mat-list-option.mat-list-item-with-avatar {
+        height: auto;
+    }
+
+    .mat-list-base {
+        width: 100%;
+    }
+
+    .ng-dropdown-panel {
+        z-index: 10000;
+    }
+}
+
+.pl-5 {
+    padding-left: 5px;
+}
+
+.pr-5 {
+    padding-right: 5px;
+}
+
+.p-5 {
+    padding: 5px;
+}

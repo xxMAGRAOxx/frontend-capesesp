@@ -1,0 +1,80 @@
+@import "src/@fuse/scss/fuse";
+
+.rating {
+    @include media-breakpoint("xs") {
+        width: 100%;
+    }
+
+    @include media-breakpoint("gt-xs") {
+        width: 640px;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mat-checkbox-layout,
+    .mat-checkbox-label {
+        display: flex;
+        flex: 1;
+    }
+
+    .resume-text {
+        margin-left: 20px;
+    }
+}
+
+.rating-list li {
+    float: right;
+    color: #ddd;
+}
+
+.rating-list li:hover {
+    &:not(.only-view) {
+        color: #ffd700;
+        cursor: pointer;
+    }
+
+    &.only-view {
+        pointer-events: none;
+    }
+}
+
+.rating-list li.selected {
+    color: #ffd700;
+}
+
+.rating-list {
+    display: inline-block;
+    list-style: none;
+    padding-inline-start: 6px;
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+.emoji {
+    font-size: 2.5rem;
+    margin: 0 0.5rem;
+    filter: gray;
+    -webkit-filter: grayscale(100%);
+
+    &:hover {
+        &:not(.disabled) {
+            filter: none;
+            -webkit-filter: grayscale(0%);
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+    }
+
+    &.active {
+        filter: none;
+        -webkit-filter: grayscale(0%);
+    }
+}

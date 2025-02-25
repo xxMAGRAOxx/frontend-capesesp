@@ -1,0 +1,277 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0" style="max-height: 56px;">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{'lbl_detalhes' | translate }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-dialog-content class="p-24 pb-0 m-0 pt-8" fusePerfectScrollbar
+        [fusePerfectScrollbarOptions]="{suppressScrollX: true}" style="height: 100%;">
+        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center" class="bordered"
+            style="min-height: 60px;">
+            <div *ngIf="_data.benefit_image_url && _data.benefit_image_url != '' || _data.provider_image_url && _data.provider_image_url != ''"
+                class="w-20-p" fxLayoutAlign="center center"
+                style="min-width: 140px; margin-bottom: 6px; margin-right: 12px;">
+                <img src="{{_data.benefit_image_url ? _data.benefit_image_url : _data.provider_image_url}}"
+                    class="_data-logo">
+            </div>
+            <div *ngIf="_data.benefit_proper_name" class="benefit-name" fxLayoutAlign="center">
+                {{_data.benefit_proper_name}}
+            </div>
+        </div>
+        <!-- <div *ngIf="_data.allow_surplus_points == true" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center"
+            class="pt-16 pb-0 info">
+            <div class="w-100-p">
+                <div class="message-box info" style="padding: 6px; font-size: 90%;">
+                    {{ 'lbl_comPontosExcedentes' | translate }}
+                </div>
+            </div>
+        </div> -->
+        <div *ngIf="_data.danger_notes?.length > 0" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center"
+            class="pt-16 pb-0 info">
+            <div class="w-100-p">
+                <div class="message-box error" style="padding: 6px; font-size: 90%;">
+                    <div *ngFor='let note of _data.danger_notes'>
+                        {{note.text}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="_data.allow_surplus_points == false  && !onlyView && _generalServices.user.benefits_modality !== 'T'"
+            fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center" class="pt-16 pb-0 info">
+            <div class="w-100-p">
+                <div class="message-box warning" style="padding: 6px; font-size: 90%;">
+                    {{ 'lbl_semPontosExcedentes' | translate }}
+                </div>
+            </div>
+        </div>
+        <div *ngIf="_data.allow_surplus_points == true  && !onlyView && _generalServices.user.benefits_modality !== 'T'"
+            fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center" class="pt-16 pb-0 info">
+            <div class="w-100-p">
+                <div class="message-box warning" style="padding: 6px; font-size: 90%;">
+                    {{ 'lbl_aceitaPontosExcedentes' | translate }}
+                </div>
+            </div>
+        </div>
+        <div *ngIf="_data.notes?.length > 0" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center"
+            class="pt-16 pb-0 info">
+            <div class="w-100-p">
+                <div class="message-box warning" style="padding: 6px; font-size: 90%;">
+                    <div *ngFor='let note of _data.notes'>
+                        {{note.text}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="_data.type" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center"
+            class="pt-16 pb-8 info">
+            <div *ngIf="_data.type === 'Up'" class="w-100-p">
+                <div class="message-box info" fxFlex fxLayout="row" fxLayoutGap="5px">
+                    <mat-icon>card_membership</mat-icon>
+                    <mat-icon class="mr-8">arrow_upward</mat-icon>
+                    <div fxFlex>{{'lbl_beneficioUpgrade' | translate}}</div>
+                    <div fxFlex fxLayoutAlign="end center">
+                        {{('lbl_beneficioBase'| translate)+': '+_data.base_benefit_name}}
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="_data.type === 'Down'" class="w-100-p">
+                <div class="message-box info" fxFlex fxLayout="row" fxLayoutGap="5px">
+                    <mat-icon fxFlex>card_membership</mat-icon>
+                    <mat-icon fxFlex class="mr-8">arrow_downward</mat-icon>
+                    <div fxFlex>{{'lbl_beneficioDowngrade' | translate}}</div>
+                    <div fxFlex fxLayoutAlign="end center">
+                        {{('lbl_beneficioBase'|translate)+': '+_data.base_benefit_name}}
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="_data.type === 'Extra'" class="w-100-p">
+                <div class="message-box info" fxFlex fxLayout="row" fxLayoutGap="5px">
+                    <mat-icon fxFlex="5" class="mr-8">card_giftcard</mat-icon>
+                    <div fxFlex>{{'lbl_beneficioExtra' | translate}}</div>
+                </div>
+            </div>
+            <div *ngIf="_data.type === 'Base'" class="w-100-p">
+                <div class="message-box info" fxFlex fxLayout="row" fxLayoutGap="5px">
+                    <mat-icon fxFlex="5" class="mr-8">card_membership</mat-icon>
+                    <div fxFlex>{{'lbl_beneficioBase' | translate}}</div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center" class="pt-16 pb-8 info">
+            <div *ngIf="_data.benefit_supplier != ''" class="w-50-p">
+                <mat-label>{{ 'lbl_fornecedor' | translate }}</mat-label><br>
+                {{ _data.benefit_supplier }}
+            </div>
+            <div *ngIf="_data.category_name != ''" class="w-50-p">
+                <mat-label>{{ 'lbl_categoria' | translate }}</mat-label><br>
+                {{ _data.category_name }}
+            </div>
+        </div>
+        <div *ngIf="_data.benefit_accommodation_description" class="w-100-p" fxLayout="column" fxLayout.gt-xs="row"
+            fxLayoutAlign="center center" class="pt-16 pb-8 info">
+            <div>
+                <mat-label>{{ 'lbl_dsAcomodacao' | translate }}</mat-label><br>
+                <div [innerHTML]="_data.benefit_accommodation_description"></div>
+            </div>
+        </div>
+        <div *ngIf="_data.relative" class="w-100-p" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center"
+            class="pt-16 pb-8 info">
+            <div>
+                <mat-label>{{ 'lbl_dependentes' | translate }}</mat-label><br>
+                <div [innerHTML]="_data.relative"></div>
+            </div>
+        </div>
+        <div *ngIf="(!_data.display_only && finalPriceDeduction === undefined &&
+         ((!_data.deduction_fixed_value && _data.company_contribution_percentual) || _data.contribuity)) && !(this._generalServices.user.basic)"
+            fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center" class="pt-16 pb-8 info">
+            <div *ngIf="!_data.deduction_fixed_value && _data.company_contribution_percentual && !finalPriceDeduction"
+                class="w-50-p">
+                <mat-label>{{ 'lbl_coparticipacaoColaborador' | translate }}</mat-label><br>
+                {{ (100 - _data.company_contribution_percentual) / 100 | myPercent }}
+            </div>
+            <div *ngIf="_data.contribuity" class="w-50-p">
+                <mat-label>{{ 'lbl_valorMaxCoparticipacao' | translate }}</mat-label><br>
+                {{ _data.contribuity | myCurrency }}
+            </div>
+        </div>
+        <div *ngIf="_data.benefit_coparticipation_description" class="w-100-p" fxLayout="column" fxLayout.gt-xs="row"
+            fxLayoutAlign="start center" class="pt-16 pb-8 info">
+            <div>
+                <mat-label>{{ 'lbl_dsCoparticipacao' | translate }}</mat-label><br>
+                <div [innerHTML]="_data.benefit_coparticipation_description"></div>
+            </div>
+        </div>
+        <div *ngIf="_data.benefit_description != ''" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center"
+            class="py-8 info">
+            <div class="w-100-p">
+                <mat-label>Mais Informações</mat-label><br>
+                <div [innerHTML]="_data.benefit_description"></div>
+            </div>
+        </div>
+        <div *ngIf="healthcareAgeGroups && healthcareAgeGroups.length > 0">
+            <div class="pt-16 pb-0 info">
+                {{'aba_faixaEtaria' | translate}}
+            </div>
+            <table class="w-100-p age-groups-table">
+                <tr class="age-groups-header-row">
+                    <th class="w-33-p" fxFlex fxLayoutAlign="center center">{{ 'lbl_nrIdadeInicial' | translate }}</th>
+                    <th class="w-33-p" fxFlex fxLayoutAlign="center center">{{ 'lbl_nrIdadeFinal' | translate }}</th>
+                    <th class="w-34-p" fxFlex fxLayoutAlign="center center"
+                        *ngIf="healthcareAgeGroups[0].price || healthcareAgeGroups[0].points">{{
+                        (healthcareAgeGroups[0].price
+                        ?
+                        'lbl_valorBeneficio' :
+                        'lbl_pontos') | translate }}</th>
+                </tr>
+                <tr *ngFor="let ageGroup of healthcareAgeGroups" class="age-groups-row">
+                    <td *ngIf="ageGroup.initial_age || ageGroup.initial_age === 0" fxFlex fxLayoutAlign="center center">
+                        {{ ageGroup.initial_age }}
+                    </td>
+                    <td *ngIf="ageGroup.final_age || ageGroup.final_age === 0" fxFlex fxLayoutAlign="center center">
+                        {{ ageGroup.final_age }}
+                    </td>
+                    <td *ngIf="ageGroup.price || ageGroup.points" fxFlex fxLayoutAlign="center center">
+                        {{ageGroup.price? (ageGroup.price | myCurrency) : ageGroup.points}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div *ngIf="options?.length > 0">
+            <div class="pt-16 pb-0 info">
+                {{'lbl_opcoes' | translate}}
+            </div>
+            <table class="w-100-p age-groups-table">
+                <tr class="age-groups-header-row">
+                    <th class="w-33-p" fxFlex fxLayoutAlign="center center">{{ 'lbl_titulo' | translate }}</th>
+                    <th class="w-33-p" fxFlex fxLayoutAlign="center center">{{ 'lbl_distanciaInicial' | translate }}
+                    </th>
+                    <th class="w-34-p" fxFlex fxLayoutAlign="center center"
+                        *ngIf="options[0].price || options[0].points">{{
+                        (_generalServices.user.benefits_modality === 'T'
+                        ?
+                        'lbl_valorBeneficio' :
+                        'lbl_pontos') | translate }}</th>
+                </tr>
+                <tr *ngFor="let option of options" class="age-groups-row">
+                    <td *ngIf="option.name" fxFlex fxLayoutAlign="center center">
+                        {{ option.name }}
+                    </td>
+                    <td *ngIf="option.initial_distance || option.initial_distance === 0" fxFlex
+                        fxLayoutAlign="center center">
+                        {{ option.initial_distance }}
+                    </td>
+                    <td *ngIf="option.price || option.points" fxFlex fxLayoutAlign="center center">
+                        {{_generalServices.user.benefits_modality === 'T'? (option.price | myCurrency) : option.points}}
+                    </td>
+            </table>
+        </div>
+        <div *ngIf="!_data.display_only && !_data.find_vt_solutions_lines" fxLayout="column" fxLayout.gt-xs="row"
+            fxLayoutAlign="start center" class="pt-16 pb-8 info">
+            <div *ngIf="_data.min_points != ''" class="w-100-p">
+                <mat-label>{{ (this._generalServices.user.benefits_modality != 'T' ? 'red_pontuacao' : 'lbl_valores' ) |
+                    translate }}</mat-label><br>
+                <span>
+                    {{ getPoints() }}
+                    {{ getLabel() | translate }}
+                </span>
+                <span *ngIf='_data.extra_allocation_percentual > 0'>&nbsp;+ {{_data.extra_allocation_percentual}}%
+                </span>
+            </div>
+        </div>
+        <div *ngIf="!_data.display_only && !finalPriceDeduction" fxLayout="column" fxLayout.gt-xs="row"
+            fxLayoutAlign="start center" class="pt-16 pb-8 info">
+            <div *ngIf="_data.adhesion_value" class="w-50-p">
+                <mat-label>{{ 'lbl_vlAdesao' | translate }}</mat-label><br>
+                {{ _data.adhesion_value | myCurrency }}
+            </div>
+            <div *ngIf="_data.deduction_fixed_value" class="w-50-p">
+                <mat-label>{{ 'lbl_vlDescontoFolha' | translate }}</mat-label><br>
+                {{ _data.deduction_fixed_value | myCurrency }}
+            </div>
+        </div>
+        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center" class="pt-16 pb-8 info">
+            <div *ngIf="finalPriceDeduction >= 0 " class="w-50-p">
+                <mat-label>{{ 'lbl_vlDescontadoNaFolhaPagamento' | translate }}</mat-label><br>
+                {{ finalPriceDeduction | myCurrency }}
+            </div>
+        </div>
+        <div *ngIf="_data.find_vt_solutions_lines && _data.maisvt?.descricao" fxLayout="column"
+            fxLayoutAlign="start start" class="pt-16 pb-8 info">
+            <div class="pt-16 pb-8 info">
+                <mat-label>{{ 'lbl_escolhaLinhasVT' | translate }}</mat-label><br>
+                <div>
+                    {{_data.maisvt.description}}
+                </div>
+            </div>
+            <div class="pt-16 pb-8 info">
+                <mat-label>{{ 'lbl_quantidade' | translate }}</mat-label><br>
+                {{_data.maisvt.quantity}}
+            </div>
+            <div class="pt-16 pb-8 info">
+                <mat-label>{{ 'lbl_valorUnitario' | translate }}</mat-label><br>
+                {{_data.maisvt.unitary_value | myCurrency}}
+            </div>
+            <div class="pt-16 pb-8 info">
+                <mat-label>{{ 'lbl_nomeCartao' | translate }}</mat-label><br>
+                {{_data.maisvt.card_name}}
+            </div>
+            <div class="pt-16 pb-8 info">
+                <mat-label>{{ 'lbl_numeroCartao' | translate }}</mat-label><br>
+                {{_data.maisvt.card_number}}
+            </div>
+
+        </div>
+    </mat-dialog-content>
+    <div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button mat-raised-button color="accent" (click)="confirm()" class="mr-4 save-button" aria-label="SAVE"
+            class="mat-raised-button mat-button-base mr-4 mobile-button-100">
+            {{ 'btn_ok' | translate }}
+        </button>
+        <button *ngIf="_data.detail_url && _data.detail_url != ''" mat-raised-button color=""
+            (click)="openUrl(_data.detail_url)" class="mr-4 save-button" aria-label="SAVE"
+            class="mat-raised-button mat-button-base mr-4 mobile-button-100">
+            {{ 'lbl_saibaMais' | translate }}
+        </button>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+<form class="mr-12" [formGroup]="cruzzyForm" [fxLayout]="data.fxLayout ? data.fxLayout : 'row'"
+    [fxLayoutAlign]="data.fxLayoutAlign ? data.fxLayoutAlign : 'start start'" [style]="data.style">
+    <mat-slide-toggle [formControlName]="data.formControlName">{{ data.label | translate }}
+    </mat-slide-toggle>
+</form>

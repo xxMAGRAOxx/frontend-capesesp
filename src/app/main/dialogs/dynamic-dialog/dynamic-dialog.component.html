@@ -1,0 +1,33 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar *ngIf="data.title" [ngClass]="data.title_class">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{data.title | translate }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-12 m-0">
+        <div [style]="data.custom_css" fxLayout="column" fxLayoutAlign="start start">
+            <div *ngIf="data.message" class="p-24 m-0">
+                {{ data.message | translate }}
+            </div>
+            <div *ngIf="data.message_box" class="message-box info mb-4 mt-4 w-100-p">
+                {{ data.message_box | translate }}
+            </div>
+
+            <div *ngIf="data.cruzzy_form" fxLayout="column" fxLayoutAlign="start start" [class]="'w-100-p internal-form ' + data.form_custom_css">
+                <div *ngFor="let formItens of data.cruzzy_form.formFields" fxLayout="column" fxLayoutAlign="start start"
+                    class="w-100-p">
+                    <dialog-cruzzy-form [cruzzyForm]="data.cruzzy_form.dataForm" [data]="formItens"
+                        class="w-100-p"></dialog-cruzzy-form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button *ngFor="let button of data.buttons" mat-raised-button [color]="button.color"
+            [disabled]="button.disabled()" [ngClass]="button.class"
+            (click)="typeOf(button.action) === 'function' ? button.action() : closeModal(button.action)">
+            <mat-icon *ngIf="button.icon">{{button.icon}}</mat-icon>
+            {{ button.label | translate }}
+        </button>
+    </div>
+</div>

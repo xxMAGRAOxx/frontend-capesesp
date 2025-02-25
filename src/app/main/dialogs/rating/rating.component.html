@@ -1,0 +1,42 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{ title | translate }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="px-24 py-8 m-0" fusePerfectScrollbar
+        [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+        <div fxLayout="column" fxLayoutAlign="start center" fxFlex [formGroup]="dataForm">
+            <div *ngIf="!onlyView">{{ 'msg_avalieEsseChamado' | translate }}</div>
+            <div fxLayout="row" fxLayoutAlign="center center" fxFlex class="pt-8 pb-8 rating-star">
+                <span [ngClass]="{'active' : selectedValue===1, 'disabled' : onlyView}" class="emoji" id="1"
+                    (click)="saveRating($event)">😡</span>
+                <span [ngClass]="{'active' : selectedValue===2, 'disabled' : onlyView}" class="emoji" id="2"
+                    (click)="saveRating($event)">😕</span>
+                <span [ngClass]="{'active' : selectedValue===3, 'disabled' : onlyView}" class="emoji" id="3"
+                    (click)="saveRating($event)">🙂</span>
+                <span [ngClass]="{'active' : selectedValue===4, 'disabled' : onlyView}" class="emoji" id="4"
+                    (click)="saveRating($event)">😀</span>
+                <span [ngClass]="{'active' : selectedValue===5, 'disabled' : onlyView}" class="emoji" id="5"
+                    (click)="saveRating($event)">🤩</span>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="start start" class="w-100-p">
+                <mat-form-field class="w-100-p" appearance="outline" fxFlex>
+                    <mat-label>{{'app_lbl_603' | translate}}</mat-label>
+                    <textarea rows="5" name="rating_justification" formControlName="rating_justification"
+                        maxlength="500" matInput [readonly]="onlyView" style="resize: none;"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button *ngIf="!onlyView" mat-raised-button color="accent" (click)="confirm()" [disabled]="dataForm.invalid"
+            class="mr-4 save-button" aria-label="SAVE" class="mat-raised-button mat-button-base mr-4 mobile-button-100">
+            <mat-icon>check_circle_outline</mat-icon> {{ buttonConfirm | translate }}
+        </button>
+        <button mat-raised-button (click)="cancel()" class="save-button" aria-label="SAVE"
+            class="mat-raised-button mat-button-base mr-4 mobile-button-100">
+            {{ buttonCancel | translate }}
+        </button>
+    </div>
+</div>

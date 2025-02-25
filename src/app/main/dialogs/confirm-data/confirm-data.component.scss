@@ -1,0 +1,42 @@
+@import "src/@fuse/scss/fuse";
+
+.confirm-data {
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint('gt-xs') {
+        width: 800px;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .subtitle {
+        padding-top: 12px;
+        padding: 0;
+        font-size: 20px;
+        font-weight: 600;
+        justify-content: flex-start !important;
+    }
+
+    .content {
+        margin: 20px 0;
+    }
+
+    .bordered {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2) !important;
+        padding-bottom: 20px;
+    }
+
+    mat-label {
+        font-weight: 600 !important;
+    }
+}

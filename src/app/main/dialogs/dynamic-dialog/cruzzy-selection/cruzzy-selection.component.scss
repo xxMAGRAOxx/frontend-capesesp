@@ -1,0 +1,7 @@
+@import "src/@fuse/scss/fuse";
+
+form {
+    @include media-breakpoint('lt-md') {
+        width: 100% !important;
+    }
+}

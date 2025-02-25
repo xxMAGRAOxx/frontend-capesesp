@@ -1,0 +1,91 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{(layout === 'FLASH_WS' || layout === 'ALELOSIMPL' ? 'lbl_dtCredito' :
+                layout === 'SODEXO_V7' ? 'lbl_dtCreditoSodexo' : layout === 'UNIMED_SEGUROS' ? 'lbl_dataCompetencia' :
+                layout === 'MAISVT_WS' ? 'lbl_exportacaoCompraMaisvt' : 'hint_dtReferencia') | translate
+                }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar
+        [fusePerfectScrollbarOptions]="{suppressScrollX: true, suppressScrollY: true}">
+        <form [formGroup]="formGroup" class="internal-form">
+            <div *ngIf="layout === 'FLASH_WS'">
+                <cruzzy-select id="payment" appendTo="#payment" notFoundText="{{ 'lbl_semResultados' | translate }}"
+                    appearance="outline" floatLabel="always" [clearable]="false" formControlName="payment"
+                    name='payment' placeholder="{{ 'lbl_tipoPagamento' | translate }}"
+                    title="{{ 'lbl_tipoPagamento' | translate }}">
+                    <ng-option value="billet">{{'lbl_flashBoleto' | translate}}</ng-option>
+                    <ng-option value="balance">{{'lbl_flashCash' | translate}}</ng-option>
+                </cruzzy-select>
+            </div>
+            <div *ngIf="layout == 'MAISVT_WS'">
+                <mat-radio-group aria-label="Tipo de exportação" formControlName="type" class="w-100-p">
+                    <mat-radio-button value="API">{{ 'lbl_exportarApi' | translate }}</mat-radio-button>
+                    <mat-radio-button value="CSV">{{ 'lbl_exportarCsv' | translate }}</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <br>
+            <div *ngIf="layout == 'TICKET'">
+                <mat-radio-group aria-label="Tipo de exportação" formControlName="one_file_per_company" class="w-100-p">
+                    <mat-radio-button value="NO" [checked]="true">{{ 'lbl_exportarArquivoUnico' | translate
+                        }}</mat-radio-button>
+                    <mat-radio-button value="YES">{{ 'lbl_exportarArquivoPorEmpresa' | translate }}</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <br>
+            <div style="max-width: 300px;" *ngIf="!(layout === 'MAISVT_WS' && formGroup.get('type').value !== 'API')">
+                <cruzzy-date-picker [formGroup]="formGroup" [componentId]="'dataReferenciaDatePicker'"
+                    [titleText]="'hint_dtReferencia'" [minDate]="minDate" [maxDate]="maxDate"
+                    [labelText]="(layout === 'FLASH_WS' || layout === 'ALELOSIMPL') ? 'lbl_selectADate' : ((layout === 'SODEXO_V7' || layout === 'MAISVT_WS') ? 'lbl_dtCreditoSodexo' : (layout === 'UNIMED_SEGUROS' ? 'lbl_dataCompetencia' : 'lbl_dataReferencia'))"
+                    [fieldName]="layout === 'FLASH_WS' || layout === 'MAISVT_WS' || layout === 'ALELOSIMPL' ? 'credit_date' : 'reference_date'">
+                </cruzzy-date-picker>
+            </div>
+            <div *ngIf="layout === 'MAISVT_WS' && formGroup.get('type').value === 'API'">
+                <cruzzy-select id="order_type" appendTo="#order_type"
+                    notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+                    [clearable]="false" formControlName="order_type" name='order_type'
+                    placeholder="{{ 'lbl_tipoPedido' | translate }}" title="{{ 'lbl_tipoPedido' | translate }}">
+                    <ng-option value="N">{{'lbl_normal' | translate}}</ng-option>
+                    <ng-option value="E">{{'lbl_extra' | translate}}</ng-option>
+                </cruzzy-select>
+            </div>
+            <div *ngIf="layout === 'MAISVT_WS' && formGroup.get('type').value === 'CSV'">
+                <cruzzy-select id="line_type" appendTo="#line_type" notFoundText="{{ 'lbl_semResultados' | translate }}"
+                    appearance="outline" floatLabel="always" [clearable]="false" formControlName="line_type"
+                    name='line_type' placeholder="{{ 'lbl_tipoExportacao' | translate }}"
+                    title="{{ 'lbl_tipoExportacao' | translate }}">
+                    <ng-option value="identified">{{'lbl_linhasIdentificadas' | translate}}</ng-option>
+                    <ng-option value="custom">{{'lbl_linhasPersonalizadas' | translate}}</ng-option>
+                </cruzzy-select>
+            </div>
+            <div
+                *ngIf="(layout === 'MAISVT_WS' || layout === 'MAISVT_CSV') && (formGroup.get('type').value === 'CSV' || formGroup.get('type').value === 'API')">
+                <cruzzy-select id="one_file_per_company" appendTo="#one_file_per_company"
+                    notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+                    [clearable]="false" formControlName="one_file_per_company" name='one_file_per_company'
+                    placeholder="{{ 'lbl_agrupamento' | translate }}" title="{{ 'lbl_agrupamento' | translate }}">
+                    <ng-option value="NO">{{'lbl_agrupamentoPorFilial' | translate}}</ng-option>
+                    <ng-option value="YES">{{'lbl_semAgrupamento' | translate}}</ng-option>
+                </cruzzy-select>
+            </div>
+            <div *ngIf="(layout === 'MAISVT_WS' || layout === 'MAISVT_CSV') && formGroup.get('type').value === 'CSV'"
+                class="toggle">
+                <mat-slide-toggle formControlName="send_branches" color="accent">
+                    {{ 'lbl_enviarLocaisDeEntregaFiliais' | translate }}
+                </mat-slide-toggle>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button [disabled]="formGroup.invalid || formGroup.pristine" mat-raised-button color="accent"
+            (click)="confirm()" class="mr-4 save-button" aria-label="SAVE"
+            class="mat-raised-button mat-button-base mr-4">
+            <mat-icon>check_circle_outline</mat-icon> {{ 'btn_confirmarCompraBeneficios' | translate }}
+        </button>
+        <button mat-raised-button (click)="cancel()" class="save-button" aria-label="SAVE"
+            class="mat-raised-button mr-4">
+            {{ 'btn_cancelar' | translate }}
+        </button>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+@import "src/@fuse/scss/fuse";
+
+.term-use {
+    @include media-breakpoint("xs") {
+        width: 100%;
+        .mat-dialog-actions {
+            justify-content: center !important;
+        }
+        .mat-checkbox {
+            margin: 10px 0;
+        }
+        button {
+            margin: 10px 0;
+        }
+    }
+
+    @include media-breakpoint("gt-xs") {
+        width: 80vw;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+    }
+
+    .mat-dialog-content{
+        height: 500px;
+    }
+
+    .dialog-content-wrapper {
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mat-checkbox-layout,
+    .mat-checkbox-label {
+        display: flex;
+        flex: 1;
+    }
+
+    .resume-text {
+        margin-left: 12px;
+        padding-top: 1px;
+    }
+
+    .mat-checkbox-layout {
+        display: flex;
+    }
+
+    .mat-checkbox-layout {
+        display: flex;
+    }
+    .checkbox-bold {
+        font-weight: 800;
+        font-size: 15px;
+    }
+}

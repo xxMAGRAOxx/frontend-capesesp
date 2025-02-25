@@ -1,0 +1,71 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{'lbl_dadosEmail' | translate }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-12 m-0" fusePerfectScrollbar
+        [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+        <div class="message-box info mb-4 mt-8">
+            {{ 'msg_personalizacaoEmailAdmissao' | translate }}
+        </div>
+        <form *ngIf="dataForm" [formGroup]="dataForm" class="p-8 w-100-p internal-form" fxLayout="column">
+            <div *ngIf="emailModels.length > 0" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start start"
+                class="w-100-p">
+                <div class="w-100-p">
+                    <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)" id="emailModel" appendTo="#emailModel"
+                        notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+                        name="emailModel" placeholder="{{ 'lbl_modeloEmail' | translate }}"
+                        (change)="setEmailModel($event)" title="{{ 'lbl_modeloEmail' | translate }}">
+                        <ng-option *ngFor="let emailModel of emailModels" [value]="emailModel.body">
+                            {{ emailModel.name | translate }}
+                        </ng-option>
+                    </cruzzy-select>
+                </div>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>{{ 'lbl_assunto' | translate }}</mat-label>
+                    <input name="welcome_title_email_template" [formControlName]="emailTitleControl" type="text"
+                        matInput>
+                </mat-form-field>
+                <cruzzy-html-editor [formGroup]="dataForm" [control]="emailbodyControl"></cruzzy-html-editor>
+            </div>
+            <!-- Ajuda campos variáveis -->
+            <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="start start">
+                <div class="w-100-p">
+                    <mat-accordion multi>
+                        <mat-expansion-panel [expanded]="false">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <mat-icon>live_help</mat-icon>{{
+                                    'lbl_camposVariaveis' |
+                                    translate }}
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div>
+                                <div class="pt-8">
+                                    {{ 'msg_camposVariaveis' | translate }}
+                                </div>
+                                <div class="pt-8" [innerHTML]="'msg_descricaoCamposVariaveisAdmissao' | translate">
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button mat-raised-button color="accent"
+            [disabled]="dataForm && dataForm.get(emailbodyControl).invalid && dataForm.get(emailTitleControl).invalid"
+            (click)="confirm()" class="mr-4 save-button" aria-label="SAVE"
+            class="mat-raised-button mat-button-base mr-4">
+            <mat-icon>mail</mat-icon> {{ buttonConfirm | translate }}
+        </button>
+        <button mat-raised-button (click)="cancel()" class="save-button" aria-label="SAVE"
+            class="mat-raised-button mr-4">
+            {{ buttonCancel | translate }}
+        </button>
+    </div>
+</div>

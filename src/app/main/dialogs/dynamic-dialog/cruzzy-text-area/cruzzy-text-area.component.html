@@ -1,0 +1,13 @@
+<div #textArea class="w-100-p mt-8 field" fxLayout="row" fxLayoutAlign="start start" [formGroup]="cruzzyForm" [style]="data?.style">
+    <mat-form-field [appearance]="data.appearance ? data.appearance : 'outline'" floatLabel="always" class="w-100-p">
+        <mat-label>{{ data.label | translate }}</mat-label>
+        <textarea  name="{{data.formControlName}}" 
+            title="{{ (data.hint ? data.hint : data.label) | translate }}" [formControlName]="data.formControlName"
+            [rows]="data.rows ? data.rows : '3'" matInput></textarea>
+        <mat-error *ngIf="cruzzyForm.get(data.formControlName).invalid && data.showError">
+            <ng-container *ngIf="cruzzyForm.get(data.formControlName).hasError('required')">
+                {{'lbl_obrigatorio' | translate}}
+            </ng-container>
+        </mat-error>
+    </mat-form-field>
+</div>

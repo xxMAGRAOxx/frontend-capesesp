@@ -1,0 +1,12 @@
+@import "src/@fuse/scss/fuse";
+
+.items {
+
+    @include media-breakpoint('lt-md') {
+        width: 100% !important;
+    }
+}
+
+.hide {
+    display: none;
+}

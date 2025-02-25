@@ -1,0 +1,35 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{'lbl_beneficiosParaExportacao' | translate }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar
+        [fusePerfectScrollbarOptions]="{suppressScrollX: true}" style="height: 300px;">
+        <form [formGroup]="dataForm" class="internal-form" style="margin-bottom: 0px;">
+            <div class="w-100-p pb-16">
+                {{ 'lbl_selecioneBeneficiosExportar' | translate }}
+            </div>
+            <div class="w-100-p">
+                <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)" id="benefit_id" appendTo="#benefit_id"
+                    notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+                    [clearable]="true" formControlName="benefit_id" name="benefit_id"
+                    placeholder="{{ 'lbl_beneficios' | translate }}" title="{{ 'hint_nmBeneficio' | translate }}"
+                    [multiple]="true">
+                    <ng-option *ngFor="let benefit of benefits" [value]="benefit.benefit_id">
+                        {{ benefit.benefit_name }}</ng-option>
+                </cruzzy-select>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button [disabled]="dataForm.invalid" mat-raised-button color="accent" (click)="confirm()"
+            class="mr-4 save-button" aria-label="SAVE" class="mat-raised-button mat-button-base mr-4">
+            <mat-icon>check_circle_outline</mat-icon> {{ 'btn_confirmarCompraBeneficios' | translate }}
+        </button>
+        <button mat-raised-button (click)="cancel()" class="save-button" aria-label="SAVE"
+            class="mat-raised-button mr-4">
+            {{ 'btn_cancelar' | translate }}
+        </button>
+    </div>
+</div>

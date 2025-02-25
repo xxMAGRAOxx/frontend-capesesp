@@ -1,0 +1,5 @@
+<div class="w-100-p" fxLayout="row" fxLayoutAlign="start start" [formGroup]="cruzzyForm">
+    <input [formControlName]="data.formControlName" [accept]="data.accept_types" [name]="data.formControlName"
+        ng-value="fileToUpload" (change)="data.change($event)" value="{{fileToUpload}}" file-model="fileToUpload"
+        set-file-data="fileToUpload = value;" type="file" [id]="data.formControlName" />
+</div>

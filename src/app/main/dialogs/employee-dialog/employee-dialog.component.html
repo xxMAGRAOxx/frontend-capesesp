@@ -1,0 +1,23 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{'lbl_fichaColaborador' | translate }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-dialog-content class="p-24 m-0 badge-content" style="padding-bottom: 0px !important;">
+        <iframe #badge [frameBorder]="0"></iframe>
+    </mat-dialog-content>
+    <div mat-dialog-actions class="m-0 p-8" fxLayout="row" fxLayoutAlign="start center fxLayoutGap"
+        style="border-top: 1px solid rgba(0, 0, 0, 0.12); min-height: 60px">
+        <div>
+            <button mat-raised-button color="accent" (click)="print()" class="save-button" aria-label="SAVE"
+                class="add-todo-button mat-raised-button mat-button-base m-4">
+                <mat-icon>print</mat-icon> {{ 'btn_imprimir' | translate }}
+            </button>
+            <button mat-raised-button (click)="cancel()" class="save-button" aria-label="SAVE"
+                class="add-todo-button mat-raised-button m-4">
+                {{ 'btn_cancelar' | translate }}
+            </button>
+        </div>
+    </div>
+</div>

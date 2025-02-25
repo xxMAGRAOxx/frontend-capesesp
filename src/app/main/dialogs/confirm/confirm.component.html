@@ -1,0 +1,50 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{title | translate }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar
+        [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+        <img src="{{ image }}" alt="{{ image }}" class="imagem-confirm" *ngIf="image" />
+        {{messageBox ? '':message}}
+        <div *ngIf="messageBox" [class]="'message-box ' + messageBox ">
+            <mat-icon class="">{{messageIcon}}</mat-icon>
+            <span class="ml-16">{{ message | translate}}
+                <div class="mt-12" *ngFor="let link of links" (click)="actionLink(link.id); confirm()">
+                    <span style="cursor: pointer; text-decoration: underline;">{{link.name}}</span>
+                </div>
+            </span>
+        </div>
+        <div class="mt-20" *ngIf="!messageBox && links && links.length > 0">
+            <div *ngFor="let link of links" (click)="actionLink(link.id); confirm()">
+                <span style="cursor: pointer; text-decoration: underline;">{{link.name}}</span>
+            </div>
+        </div>
+        <div *ngIf="resumeOn" class="w-100-p pt-16" fxLayout="row" fxLayoutAlign="start center">
+            <mat-checkbox class="example-margin" [(ngModel)]="checked" [labelPosition]="'before'" [disabled]="false">
+            </mat-checkbox>
+            <span class="resume-text">{{ resummeCheckbox | translate }}</span>
+        </div>
+        <form *ngIf="this.justification" class="pt-16" [formGroup]="justificationForm">
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>{{ lblInput | translate}}</mat-label>
+                    <textarea rows="10" name="justification" formControlName="justification" maxlength="500" matInput
+                        required></textarea>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button mat-raised-button color="accent" [disabled]="justificationForm && justificationForm.invalid"
+            (click)="confirm()" class="mr-4 save-button" aria-label="SAVE"
+            class="mat-raised-button mat-button-base mr-4">
+            <mat-icon>check_circle_outline</mat-icon> {{ buttonConfirm | translate }}
+        </button>
+        <button *ngIf="!withoutCancelButton" mat-raised-button (click)="cancel()" class="save-button" aria-label="SAVE"
+            class="mat-raised-button mr-4">
+            {{ buttonCancel | translate }}
+        </button>
+    </div>
+</div>

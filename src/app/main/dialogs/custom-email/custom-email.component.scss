@@ -1,0 +1,44 @@
+@import "src/@fuse/scss/fuse";
+
+.custom-email {
+    @include media-breakpoint("xs") {
+        width: 100%;
+    }
+
+    @include media-breakpoint("gt-xs") {
+        width: 820px;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mat-checkbox-layout,
+    .mat-checkbox-label {
+        display: flex;
+        flex: 1;
+    }
+
+    .resume-text {
+        margin-left: 12px;
+        padding-top: 1px;
+    }
+
+    .mat-checkbox-layout {
+        display: flex;
+    }
+
+    .mat-checkbox-layout {
+        display: flex;
+    }
+}
+
+confirm .mat-form-field-wrapper {
+    padding-bottom: 0px;
+}

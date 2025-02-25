@@ -1,0 +1,82 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{ title | translate }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content [ngClass]="{ 'mat-dialog-content-term': showHtmlTerms }" class="p-24 m-0" fusePerfectScrollbar fxLayout="column" fxLayoutAlign="center start"
+        [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+        <form *ngIf="!showHtmlTerms" class="w-100-p" [formGroup]="benefitTermsForm">
+            <div fxLayout="column" fxLayout.gt-sm="column" fxLayoutAlign="start start">
+                <div class="w-100-p">
+                    <cruzzy-select (removeFromList)="_generalServices.setNullForm(benefitTermsForm, $event)" dropdownPosition="bottom" id="type" appendTo="#type"
+                        notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+                        [clearable]="false" formControlName="type" name="type"
+                        placeholder="{{ 'lbl_tipoDocumento' | translate }}"
+                        title="{{ 'lbl_tipoDocumento' | translate }}">
+                        <ng-option *ngFor="let type of types" [value]="type.key">
+                            {{ type.mnemonic | translate }}</ng-option>
+                    </cruzzy-select>
+                </div>
+                <div class="w-100-p" *ngIf="benefitTermsForm.get('type').value != 'B'">
+                    <cruzzy-select (removeFromList)="_generalServices.setNullForm(benefitTermsForm, $event)" dropdownPosition="bottom" id="provider_id" appendTo="#provider_id"
+                        notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+                        [clearable]="true" [multiple]="true" formControlName="provider_id" name="provider_id"
+                        placeholder="{{ 'lbl_fornecedor' | translate }}" title="{{ 'lbl_fornecedor' | translate }}">
+                        <ng-option *ngFor="let provider of providersFiltered" [value]="provider.id">{{
+                        provider.name | translate }}
+                        </ng-option>
+                    </cruzzy-select>
+                </div>
+                <div class="w-100-p" *ngIf="benefitTermsForm.get('type').value != 'B'">
+                    <cruzzy-select (removeFromList)="_generalServices.setNullForm(benefitTermsForm, $event)" dropdownPosition="bottom" id="category_id" appendTo="#category_id"
+                        notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+                        [clearable]="true" [multiple]="true" formControlName="category_id" name="category_id"
+                        placeholder="{{ 'lbl_nmBeneficioCategoria' | translate }}"
+                        title="{{ 'lbl_nmBeneficioCategoria' | translate }}">
+                        <ng-option *ngFor="let category of categoriesFiltered" [value]="category.id">{{
+                        category.name | translate }}
+                        </ng-option>
+                    </cruzzy-select>
+                </div>
+                <div class="w-100-p" *ngIf="benefitTermsForm.get('type').value == 'B'">
+                    <cruzzy-select (removeFromList)="_generalServices.setNullForm(benefitTermsForm, $event)" dropdownPosition="bottom" id="benefit_ids" appendTo="#benefit_ids"
+                        notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+                        [clearable]="true" [multiple]="true" formControlName="benefit_ids" name="benefit_ids"
+                        placeholder="{{ 'lbl_beneficio' | translate }}" title="{{ 'lbl_beneficio' | translate }}">
+                        <ng-option *ngFor="let benefit of benefitsFiltered" [value]="benefit.id">{{
+                    benefit.name | translate }}
+                        </ng-option>
+                    </cruzzy-select>
+                </div>
+                <div class="w-100-p">
+                    <cruzzy-select (removeFromList)="_generalServices.setNullForm(benefitTermsForm, $event)" dropdownPosition="bottom" id="document_id" appendTo="#document_id"
+                        notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+                        [clearable]="false" formControlName="document_id" name="document_id"
+                        placeholder="{{ 'lbl_termo' | translate }}" title="{{ 'lbl_termo' | translate }}">
+                        <ng-option *ngFor="let document of documents" [value]="document.id">{{
+                        document.title | translate }}
+                        </ng-option>
+                    </cruzzy-select>
+                </div>
+            </div>
+        </form>
+
+        <iframe #term [frameBorder]="0" [ngClass]="{'iframe-display':showHtmlTerms === true, 'iframe-hide':showHtmlTerms === false}" style="border: 1px solid rgba(0, 0, 0, 0.12);"></iframe>
+    </div>
+    <div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button *ngIf="!showHtmlTerms" mat-raised-button color="accent" [disabled]="benefitTermsForm?.invalid"
+            (click)="confirm()" class="mr-4 save-button" aria-label="SAVE"
+            class="mat-raised-button mat-button-base mr-4">
+            <mat-icon>check_circle_outline</mat-icon> {{ buttonConfirm | translate }}
+        </button>
+        <button *ngIf="showHtmlTerms" mat-raised-button color="accent" (click)="print()" class="save-button"
+            aria-label="SAVE" class="add-todo-button mat-raised-button mat-button-base mr-4">
+            <mat-icon>print</mat-icon> {{ 'btn_imprimir' | translate }}
+        </button>
+        <button mat-raised-button (click)="cancel()" class="save-button" aria-label="SAVE"
+            class="mat-raised-button mr-4">
+            {{ buttonCancel | translate }}
+        </button>
+    </div>
+</div>

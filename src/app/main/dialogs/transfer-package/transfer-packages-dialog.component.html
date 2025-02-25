@@ -1,0 +1,100 @@
+<div class="dialog-content-wrapper w-100-p">
+    <mat-toolbar class="accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{'lbl_transferirEmployee' | translate }}</span>
+            <button mat-icon-button (click)="matDialogRef.close(['no']);" aria-label="Close Dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="pt-16 px-0 m-0 pb-0" style="min-height: 400px;">
+        <form [formGroup]="dataForm" fxFlex fxLayoutAlign="center center" class="internal-form mb-0 w-100-p px-24">
+            <div fxFlex>
+                <mat-accordion multi>
+                    <!-- ENDEREÇO -->
+                    <mat-expansion-panel [expanded]="true" [hideToggle]="true">
+                        <mat-expansion-panel-header class="disabled-pointer">
+                            <mat-panel-title>
+                                <mat-icon class="m-0 mr-8 secondary-text">arrow_back</mat-icon>
+                                {{'lbl_colaboradorOrigem' | translate }}
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div fxLayout="column" fxLayoutAlign="start start" class="w-100-p">
+                            <div class="w-100-p">
+                                <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)" id="old_company_id" appendTo="#old_company_id"
+                                    notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline"
+                                    floatLabel="always" [clearable]="false" (change)="changeCompanies('old_company_id')"
+                                    [virtualScroll]="true" formControlName="old_company_id" name="old_company_id"
+                                    [items]="oldCompanies" bindValue="id" bindLabel="name"
+                                    placeholder="{{ 'lbl_nmEmpresa' | translate }}"
+                                    title="{{ 'lbl_nmEmpresa' | translate }}">
+                                    <ng-template ng-option-tmp let-item="item">
+                                        <div [innerHTML]="_generalServices.getLeveledCompanyName(item)">
+                                        </div>
+                                    </ng-template>
+                                </cruzzy-select>
+                            </div>
+                            <div class="w-100-p">
+                                <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)" id="old_employee_id" appendTo="#old_employee_id"
+                                    [readonly]="!dataForm.get('old_company_id').value"
+                                    notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline"
+                                    floatLabel="always" [clearable]="false" formControlName="old_employee_id"
+                                    name="old_employee_id" placeholder="{{ 'lbl_nmFuncionario' | translate }}"
+                                    title="{{ 'lbl_nmFuncionario' | translate }}">
+                                    <ng-option *ngFor="let employee of oldEmployees" [value]="employee.id">{{
+                                        employee.badge + ' - ' + employee.name }}
+                                    </ng-option>
+                                </cruzzy-select>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel [expanded]="true" [hideToggle]="true">
+                        <mat-expansion-panel-header class="disabled-pointer">
+                            <mat-panel-title>
+                                <mat-icon class="m-0 mr-8 secondary-text">arrow_forward</mat-icon>
+                                {{'lbl_colaboradorDestino' | translate }}
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div fxLayout="column" fxLayoutAlign="start start" class="w-100-p">
+                            <div class="w-100-p">
+                                <cruzzy-select  id="new_company_id" appendTo="#new_company_id"
+                                    notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline"
+                                    [readonly]="!dataForm.get('old_employee_id').value" floatLabel="always"
+                                    [clearable]="false" formControlName="new_company_id" name="new_company_id"
+                                    placeholder="{{ 'lbl_nmEmpresa' | translate }}"
+                                    title="{{ 'lbl_nmEmpresa' | translate }}" dropdownPosition="top"
+                                    (change)="changeCompanies('new_company_id')">
+                                    <ng-option *ngFor="let companie of newCompanies" [value]="companie.id">{{
+                                        companie.name}}
+                                    </ng-option>
+                                </cruzzy-select>
+                            </div>
+                            <div class="w-100-p">
+                                <cruzzy-select  id="new_employee_id" appendTo="#new_employee_id"
+                                    notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline"
+                                    [readonly]="!dataForm.get('new_company_id').value" floatLabel="always"
+                                    [clearable]="false" formControlName="new_employee_id" name="new_employee_id"
+                                    placeholder="{{ 'lbl_nmFuncionario' | translate }}" dropdownPosition="top"
+                                    title="{{ 'lbl_nmFuncionario' | translate }}">
+                                    <ng-option *ngFor="let employee of newEmployees" [value]="employee.id">{{
+                                        employee.badge + ' - ' + employee.name}}
+                                    </ng-option>
+                                </cruzzy-select>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions class="m-0 py-16 px-24" fxLayout="row" fxLayoutAlign="start center">
+        <button [disabled]="dataForm.invalid" mat-raised-button color="accent" (click)="transferTicket()"
+            class="mat-raised-button" class="save-button" aria-label="save">
+            {{ 'btn_adicionar' | translate }}
+        </button>
+        <button mat-raised-button (click)="cancel()" class="save-button" aria-label="SAVE" class="mat-raised-button">
+            {{ 'btn_cancelar' | translate }}
+        </button>
+    </div>
+</div>

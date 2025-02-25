@@ -1,0 +1,143 @@
+<div class="dialog-content-wrapper w-100-p">
+    <mat-toolbar class="accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">
+                {{isQueue && !isChangeRequesting ? ('lbl_classificarChamado' | translate) : isReclassify ?
+                ('lbl_reclassificarChamado' |
+                translate) : isScreening ? ('lbl_atribuirSolicitante' | translate) : isChangeRequesting ?
+                ('lbl_alterarSolicitante' | translate) : ('lbl_transferirChamado' | translate)
+                }}
+            </span>
+            <button mat-icon-button (click)="matDialogRef.close(['no']);" aria-label="Close Dialog">
+                <mat-icon class="m-0">close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="pt-16 px-0 m-0 pb-0"
+        [style]="isReclassify ? 'min-height: 400px;' : 'min-height: 350px;'">
+        <form [formGroup]="isScreening || isChangeRequesting ? screeningDataForm : dataForm"
+            class="internal-form mb-0 w-100-p px-8">
+            <!-- Grid -->
+            <div *ngIf="isScreening || isChangeRequesting" class='content-card table'>
+                <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="start center" fxLayoutAlign.lt-md="start end"
+                    class="mb-4">
+                    <div class="w-30-p">
+                        <cruzzy-select (removeFromList)="_generalServices.setNullForm(formFilter, $event)" id="support"
+                            appendTo="#support" notFoundText="{{ 'lbl_semResultados' | translate }}"
+                            placeholder="{{ 'lbl_tipoUsuario' | translate }}" appearance="outline" floatLabel="always"
+                            formControlName="type" name="type" [clearable]="false"
+                            title="{{ 'hint_tipoUsuario' | translate }}">
+                            <ng-option *ngFor="let user of users" [value]="user.key">
+                                {{ user.name | translate }}</ng-option>
+                        </cruzzy-select>
+                    </div>
+                    <div class="w-70-p" fxLayout="row" fxLayoutAlign="start center">
+                        <mat-form-field class="search_input" appearance="outline" floatLabel="always">
+                            <mat-label>{{ 'lbl_pesquisar_por' | translate }}</mat-label>
+                            <input name=" search" formControlName="search" title="{{ 'hint_procurarPor' | translate }}"
+                                maxlength="1000" matInput>
+                        </mat-form-field>
+                        <div class="listing-actions">
+                            <cruzzy-buttons fxFlex class="w-100-p" [disabled]="processing" [buttons]="buttonsFilter"
+                                [alignment]="'left'"></cruzzy-buttons>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-layout simple right-sidebar inner-scroll" style="height: 100%;">
+                    <div class="top-bg accent rounded"></div>
+                    <div class="center">
+                        <!-- Grid -->
+                        <div class='content-card table'>
+                            <div class="content" style="min-height: 380px;height: 380px;">
+                                <ag-grid-angular style="width: 100%; height: 100%;" id="transfer-ticket-component-grid"
+                                    class="ag-theme-material" [headerHeight]="gridUtils.groupRowHeight"
+                                    [rowSelection]="rowSelection" [rowHeight]="gridUtils.rowHeight"
+                                    (paginationChanged)="onPaginationChanged()"
+                                    [frameworkComponents]="frameworkComponents"
+                                    (cellValueChanged)="onCellValueChanged($event)" (dragStopped)="saveLocalGridState()"
+                                    (columnVisible)="saveLocalGridState()" (columnPinned)="saveLocalGridState()"
+                                    (sortChanged)="saveLocalGridState()" (filterChanged)="saveLocalGridState()"
+                                    (columnRowGroupChanged)="saveLocalGridState()"
+                                    (expandOrCollapseAll)="saveLocalGridState()" (gridReady)="onGridReady($event)"
+                                    (firstDataRendered)="onFirstDataRendered($event)" [columnTypes]="columnTypesDefs"
+                                    [columnDefs]="columnDefs" [rowData]="filteredRecords"
+                                    [autoGroupColumnDef]="autoGroupColumnDef" [gridOptions]="gridDefs"
+                                    [sideBar]="sideBarDefs" [defaultColDef]="defaultColDefs"
+                                    [getContextMenuItems]="getContextMenuItems" (cellClicked)="cellClicked($event)"
+                                    (cellDoubleClicked)="detailRecord($event, true)"
+                                    [defaultGroupSortComparator]="defaultGroupSortComparator"
+                                    [excelStyles]="excelStyles" [excelStyles]="excelStyles">
+                                </ag-grid-angular>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isReclassify" fxLayout="column" fxLayoutAlign="start center">
+                <div *ngIf="showCategories" fxLayout="column" fxLayoutAlign="start start" class="w-100-p">
+                    <div class="w-100-p">
+                        <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)"
+                            id="service_ticket_category_id" appendTo="#service_ticket_category_id"
+                            notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline"
+                            floatLabel="always" [clearable]="false" formControlName="service_ticket_category_id"
+                            name="service_ticket_category_id" placeholder="{{ 'lbl_categoria' | translate }}"
+                            title="{{ 'lbl_categoria' | translate }}">
+                            <ng-option *ngFor="let user of categories" [value]="user.id">{{
+                                user.name}}
+                            </ng-option>
+                        </cruzzy-select>
+                    </div>
+                </div>
+                <div fxLayout="column" fxLayoutAlign="start start" class="w-100-p">
+                    <div class="w-100-p">
+                        <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)"
+                            id="service_ticket_type_id" appendTo="#service_ticket_type_id"
+                            notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline"
+                            floatLabel="always" [clearable]="false" formControlName="service_ticket_type_id"
+                            name="service_ticket_type_id" placeholder="{{ 'lbl_nmTipoChamado' | translate }}"
+                            title="{{ 'lbl_nmTipoChamado' | translate }}">
+                            <ng-option *ngFor="let type of filteredTypes" [value]="type.id">{{
+                                type.name}}
+                            </ng-option>
+                        </cruzzy-select>
+                    </div>
+                    <div class="w-100-p" *ngIf="isEnabledForMe">
+                        <mat-slide-toggle formControlName="mantain_responsible">{{
+                            'lbl_manterResponsavel' | translate }}
+                        </mat-slide-toggle>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!isReclassify && !isScreening && !isChangeRequesting" fxLayout="column"
+                fxLayoutAlign="start center">
+                <div fxLayout="column" fxLayoutAlign="start start" class="w-100-p">
+                    <div class="w-100-p">
+                        <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)"
+                            id="employee_id" appendTo="#employee_id"
+                            notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline"
+                            floatLabel="always" [clearable]="false" formControlName="employee_id" name="employee_id"
+                            placeholder="{{ 'lbl_usuario' | translate }}" title="{{ 'lbl_usuario' | translate }}">
+                            <ng-option *ngFor="let user of usersTransfer" [value]="user.id">{{
+                                user.name}}
+                            </ng-option>
+                        </cruzzy-select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions class="m-0 py-16 px-24" fxLayout="row" fxLayoutAlign="start center">
+        <button *ngIf="isScreening || isChangeRequesting" [disabled]="screeningDataForm.invalid" mat-raised-button
+            color="accent" (click)="transferTicket()" class="mat-raised-button" class="save-button" aria-label="save">
+            {{ isScreening ? ('lbl_atribuirEnviarFila' | translate) : ('lbl_alterarSolicitante' | translate) }}
+        </button>
+        <button *ngIf="!isScreening && !isChangeRequesting" [disabled]="dataForm.invalid" mat-raised-button
+            color="accent" (click)="transferTicket()" class="mat-raised-button" class="save-button" aria-label="save">
+            {{ isQueue && !isChangeRequesting ? ('btn_classificar' | translate) : isReclassify ? ('btn_reclassificar' |
+            translate) : ('lbl_transferir' | translate) }}
+        </button>
+        <button mat-raised-button (click)="cancel()" class="save-button" aria-label="SAVE" class="mat-raised-button">
+            {{ 'btn_cancelar' | translate }}
+        </button>
+    </div>
+</div>

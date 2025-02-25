@@ -1,0 +1,156 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{'lbl_detalhes' | translate }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-24 pb-0 m-0 pt-8" fusePerfectScrollbar
+        [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center" class="bordered"
+            style="min-height: 60px;">
+            <div class="w-100-p pt-12">
+                <div class="message-box warning" *ngIf="hasHelpdesk" style="padding: 6px;">
+                    {{ (hasHelpdesk ? 'msg_confirmarDadosCadastraisPreEleicaoChamado' :
+                    'msg_confirmarDadosCadastraisPreEleicao') | translate}}
+                </div>
+            </div>
+        </div>
+        <div class="personal-data bordered content">
+            <span class="subtitle" fxLayoutAlign="center">
+                {{ 'lbl_dadosPessoais' | translate }}
+            </span>
+            <div *ngIf="name" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center" class="pt-16 info">
+                <div *ngIf="name" class="w-100-p pb-8 ">
+                    <mat-label>{{ 'app_lbl_010' | translate }}</mat-label><br>
+                    {{ name }}
+                </div>
+            </div>
+            <div *ngIf="address" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center" class="pt-8 info">
+                <div *ngIf="address" class="w-100-p pb-8 ">
+                    <mat-label>{{ 'lbl_dsEndereco' | translate }}</mat-label><br>
+                    {{ address}}
+                </div>
+            </div>
+            <div *ngIf="neighborhood || neighborhood || city " fxLayout="column" fxLayout.gt-xs="row"
+                fxLayoutAlign="start center" class="pt-8 info">
+                <div *ngIf="neighborhood" class="w-30-p pb-8 ">
+                    <mat-label>{{ 'red_nmBairro' | translate }}</mat-label><br>
+                    {{ neighborhood }}
+                </div>
+                <div *ngIf="city" class="w-60-p pb-8 ">
+                    <mat-label>{{ 'lbl_meusDadosCidade' | translate }}</mat-label><br>
+                    {{ city }}
+                </div>
+                <div *ngIf="state" class="w-10-p pb-8 ">
+                    <mat-label>{{ 'lbl_estado' | translate }}</mat-label><br>
+                    {{ state }}
+                </div>
+            </div>
+            <div *ngIf="zipcode || phone || mobile" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center"
+                class="pt-8 info">
+                <div *ngIf="zipcode" class="w-33-p pb-8 ">
+                    <mat-label>{{ 'lbl_nmCepEntrega' | translate }}</mat-label><br>
+                    {{ zipcodeFormatter(zipcode) }}
+                </div>
+                <div *ngIf="phone" class="w-33-p pb-8 ">
+                    <mat-label>{{ 'red_nrTelefone' | translate }}</mat-label><br>
+                    {{ phone }}
+                </div>
+                <div *ngIf="mobile" class="w-33-p pb-8 ">
+                    <mat-label>{{ 'lbl_NrTelefoneCelular' | translate }}</mat-label><br>
+                    {{ mobile }}
+                </div>
+            </div>
+            <div *ngIf="vat || birthdayDate" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center"
+                class="pt-8 info">
+                <div *ngIf="vat" class="w-33-p pb-8 ">
+                    <mat-label>{{ 'red_nrCpf' | translate }}</mat-label><br>
+                    {{ vatFormatter(vat) }}
+                </div>
+                <div *ngIf="birthdayDate" class="w-33-p pb-8 ">
+                    <mat-label>{{ 'red_dataNascDependente' | translate }}</mat-label><br>
+                    {{ birthdayDate | myDate:_generalServices.dateFormat }}
+                </div>
+                <div *ngIf="gender" class="w-33-p pb-8 ">
+                    <mat-label>{{ 'lbl_sexo' | translate }}</mat-label><br>
+                    {{ (gender == 'M' ? 'lbl_masculino' : 'lbl_feminino') | translate}}
+
+                </div>
+            </div>
+            <div *ngIf="admissionDate || salary" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center"
+                class="pt-8 info">
+                <div *ngIf="admissionDate" class="w-50-p pb-8 ">
+                    <mat-label>{{ 'lbl_dataAdmissao' | translate }}</mat-label><br>
+                    {{ admissionDate | myDate:_generalServices.dateFormat }}
+                </div>
+                <div *ngIf="salary" class="w-50-p pb-8 ">
+                    <mat-label>{{ 'lbl_valorSalario' | translate }}</mat-label><br>
+                    {{salary | myCurrency }}
+                </div>
+            </div>
+            <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center" class="pt-8 info">
+                <div *ngIf="positionName" class="w-50-p pb-8">
+                    <mat-label>{{ 'lbl_nmCargo' | translate }}</mat-label><br>
+                    {{ positionName }}
+                </div>
+                <div *ngIf="occupationname" class="w-50-p pb-8">
+                    <mat-label>{{ 'lbl_nmFuncao' | translate }}</mat-label><br>
+                    {{ occupationname }}
+                </div>
+            </div>
+            <div *ngIf="organizational_unit_name" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center"
+                class="pt-8 info">
+                <div *ngIf="organizational_unit_name" class="w-100-p pb-8 ">
+                    <mat-label>{{ 'lbl_nmCentroCusto' | translate }}</mat-label><br>
+                    {{ organizational_unit_name }}
+                </div>
+            </div>
+        </div>
+        <div *ngIf="relatives?.length > 0" class="relatives-data content">
+            <div class="subtitle" fxLayoutAlign="center">
+                {{ 'lbl_registroPassoDependentes' | translate }}
+            </div>
+            <div *ngFor="let relative of relatives">
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center" class="pt-16 info">
+                    <div *ngIf="relative.name" class="w-50-p pb-8">
+                        <mat-label>{{ 'lbl_nmDependente' | translate }}</mat-label><br>
+                        {{relative.name}}
+                    </div>
+                </div>
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center" class="pt-8 info">
+                    <div *ngIf=" relative.birthday_date" class="w-33-p pb-8 ">
+                        <mat-label>{{ 'red_dataNascDependente' | translate }}</mat-label><br>
+                        {{ relative.birthday_date | myDate:_generalServices.dateFormat }}
+                    </div>
+                    <div *ngIf="relative.kinship_degree_mnemonic" class="w-33-p pb-8">
+                        <mat-label>{{ 'lbl_grauParentesco' | translate }}</mat-label><br>
+                        {{relative.kinship_degree_mnemonic | translate}}
+                    </div>
+                    <div *ngIf="relative.gender" class="w-33-p pb-8 ">
+                        <mat-label>{{ 'lbl_sexo' | translate }}</mat-label><br>
+                        {{ (relative.gender == 'M' ? 'lbl_masculino' : 'lbl_feminino') | translate}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="center center"
+        fxLayoutAlign.gt-sm="space-between center" style="min-height: auto !important;"
+        ngStyle.gt-sm="min-height: 52px !important;">
+        <div fxLayout="column" fxLayoutAlign="start center" fxLayout.gt-sm="row">
+            <button mat-raised-button color="accent" (click)="confirm()" class="save-button" [disabled]=" processing"
+                aria-label="SAVE"
+                class="mat-accent add-record-button mat-raised-button mat-button-base mr-4 mobile-button-100">
+                <mat-icon>check_circle_outline</mat-icon> {{'btn_confirmarDados' | translate}}
+            </button>
+            <button *ngIf="hasHelpdesk" mat-raised-button (click)="requestReview()" class="save-button"
+                aria-label="REVIEW" class="mat-raised-button mr-4 mobile-button-100">
+                <mat-icon>assignment_late</mat-icon>
+                {{ 'btn_solicitarRevisao' | translate }}
+            </button>
+            <button mat-raised-button (click)="cancel()" class="save-button" aria-label="CANCEL"
+                class="mat-raised-button mr-4 mobile-button-100">
+                {{ 'btn_cancelar' | translate }}
+            </button>
+        </div>
+    </div>

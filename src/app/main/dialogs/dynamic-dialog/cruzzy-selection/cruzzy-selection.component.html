@@ -1,0 +1,14 @@
+<form class="mr-12" fxLayout="row" fxLayoutAlign="start start" [formGroup]="cruzzyForm" [style]="data.style">
+    <cruzzy-select class="w-100-p" [id]="data.formControlName" [appendTo]="'#' + data.formControlName"
+        notFoundText="{{ 'lbl_semResultados' | translate }}"
+        [appearance]="data.appearance ? data.appearance : 'outline'" floatLabel="always"
+        [clearable]="data.clearable ? true : false" [closeOnSelect]="data.closeOnSelect ? true : false"
+        [multiple]="data.multiple ? true : false" [formControlName]="data.formControlName"
+        placeholder="{{  data.label | translate }}" title="{{ data.hint | translate }}" [loading]="data.loading"
+        [loadingText]="data.loadingText">
+        <ng-option #select_focus *ngFor="let item of data.options" [value]="item[data.key]">
+            <img *ngIf="data.show_option_images" src='{{item.image}}'>
+            {{item.name | translate}}
+        </ng-option>
+    </cruzzy-select>
+</form>

@@ -1,0 +1,99 @@
+<div class="cruzzy_form" [fxLayout]="data.fxLayout ? data.fxLayout : 'column'"
+    [fxLayoutAlign]="data.fxLayoutAlign ? data.fxLayoutAlign : 'start start'" [style]="data.custom_css"
+    fxLayout.lt-sm="data.fxLayoutMobile ? data.fxLayoutMobile : 'row'">
+    <div *ngIf="data.cruzzy_accordion?.length > 0" class="w-100-p">
+        <div class="items" *ngFor="let accordion of data.cruzzy_accordion">
+            <dialog-cruzzy-accordion [cruzzyForm]="cruzzyForm" [data]="accordion"></dialog-cruzzy-accordion>
+        </div>
+    </div>
+
+    <div *ngIf="data.cruzzy_tree_view?.length > 0" class="w-100-p">
+        <div class="items" *ngFor="let tree_view of data.cruzzy_tree_view" fxLayout="column" fxLayout.lt-sm="row"
+            fxLayoutAlign="start start">
+            <dialog-cruzzy-tree-view [cruzzyForm]="cruzzyForm" [data]="tree_view" fxLayout="column"
+                fxLayoutAlign="start start" class="w-100-p">
+            </dialog-cruzzy-tree-view>
+        </div>
+    </div>
+
+    <div *ngIf="data.cruzzy_select?.items?.length > 0" class="w-100-p" [fxLayout]="data.cruzzy_select.layout"
+        fxLayout.lt-md="column" fxLayoutAlign="start start">
+        <div *ngFor="let select of data.cruzzy_select?.items" class="items" [style]="data.cruzzy_select.style">
+            <dialog-cruzzy-selection *ngIf="select.visible()" [cruzzyForm]="cruzzyForm" [data]="select">
+            </dialog-cruzzy-selection>
+        </div>
+    </div>
+
+    <div *ngIf="data.cruzzy_input?.items?.length > 0" class="w-100-p" [fxLayout]="data.cruzzy_input.layout"
+        fxLayout.lt-md="column" fxLayoutAlign="start start">
+        <div *ngFor="let input of data.cruzzy_input?.items" class="items" [style]="data.cruzzy_input.style"
+            [ngClass]="input.ngClassName()">
+            <dialog-cruzzy-input *ngIf="input.visible()" [cruzzyForm]="cruzzyForm" [data]="input">
+            </dialog-cruzzy-input>
+        </div>
+    </div>
+
+    <div *ngIf="data.cruzzy_message_box?.length > 0" class="w-100-p">
+        <div class="items" *ngFor="let message_box of data.cruzzy_message_box">
+            <dialog-cruzzy-message-box *ngIf="message_box.visible()" [cruzzyForm]="cruzzyForm"
+                [data]="message_box"></dialog-cruzzy-message-box>
+        </div>
+    </div>
+
+    <div *ngIf="data.cruzzy_html_editor?.length > 0" class="w-100-p">
+        <div class="items" *ngFor="let editor of data.cruzzy_html_editor">
+            <dialog-cruzzy-html-editor [cruzzyForm]="cruzzyForm" [data]="editor">
+            </dialog-cruzzy-html-editor>
+        </div>
+    </div>
+
+    <div *ngIf="data.cruzzy_checkbox?.length > 0" class="w-100-p" [fxLayout]="data.cruzzy_checkbox.layout"
+        fxLayout.lt-md="column" fxLayoutAlign="start start">
+        <div class="items" *ngFor="let checkbox of data.cruzzy_checkbox" [style]="data.cruzzy_checkbox.style">
+            <dialog-cruzzy-checkbox [cruzzyForm]="cruzzyForm" [data]="checkbox">
+            </dialog-cruzzy-checkbox>
+        </div>
+    </div>
+
+    <div *ngIf="data.cruzzy_list?.length > 0" class="w-100-p">
+        <div class="items" *ngFor="let list of data.cruzzy_list" class="w-100-p">
+            <dialog-cruzzy-list [cruzzyForm]="cruzzyForm" [data]="list"></dialog-cruzzy-list>
+        </div>
+    </div>
+
+    <div *ngIf="data.cruzzy_file?.length > 0" class="w-100-p">
+        <div class="items" *ngFor="let file of data.cruzzy_file" class="w-100-p">
+            <dialog-cruzzy-file [cruzzyForm]="cruzzyForm" [data]="file"></dialog-cruzzy-file>
+        </div>
+    </div>
+
+    <div *ngIf="data.cruzzy_text_area?.length > 0" class="w-100-p">
+        <div class="items" *ngFor="let text_area of data.cruzzy_text_area">
+            <dialog-cruzzy-text-area *ngIf="text_area.visible()" [cruzzyForm]="cruzzyForm"
+                [data]="text_area"></dialog-cruzzy-text-area>
+        </div>
+    </div>
+
+    <div *ngIf="data.cruzzy_monetization" class="w-100-p">
+        <dialog-cruzzy-monetization *ngIf="data.cruzzy_monetization.visible()" [cruzzyForm]="cruzzyForm"
+            [data]="data.cruzzy_monetization"></dialog-cruzzy-monetization>
+    </div>
+
+    <div *ngIf="data.cruzzy_slide_toggle?.items?.length > 0" class="w-100-p"
+        [fxLayout]="data.cruzzy_slide_toggle.fxLayout ? data.cruzzy_slide_toggle.fxLayout : 'row'"
+        [fxLayoutAlign]="data.cruzzy_slide_toggle.fxLayoutAlign ? data.cruzzy_slide_toggle.fxLayoutAlign : 'start start'">
+        <div class="items" *ngFor="let slide_toggle of data.cruzzy_slide_toggle?.items"
+            [style]="data.cruzzy_slide_toggle.style">
+            <dialog-cruzzy-slide-toggle *ngIf="slide_toggle.visible()" [cruzzyForm]="cruzzyForm"
+                [data]="slide_toggle"></dialog-cruzzy-slide-toggle>
+        </div>
+    </div>
+
+    <div *ngIf="data.cruzzy_date_picker?.items?.length > 0" class="w-100-p"
+        [fxLayout]="data.cruzzy_date_picker.fxLayout ? data.cruzzy_date_picker.fxLayout : 'row'"
+        [fxLayoutAlign]="data.cruzzy_date_picker.fxLayoutAlign ? data.cruzzy_date_picker.fxLayoutAlign : 'start start'">
+        <div class="items w-100-p" *ngFor="let picker of data.cruzzy_date_picker?.items">
+            <cruzzy-dynamic-date-picker *ngIf="picker.visible()" [cruzzyForm]="cruzzyForm"
+                [data]="picker"></cruzzy-dynamic-date-picker>
+        </div>
+    </div>

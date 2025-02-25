@@ -1,0 +1,11 @@
+@import "src/@fuse/scss/fuse";
+
+form {
+    @include media-breakpoint('lt-md') {
+        width: 100% !important;
+    }
+
+    .mat-form-field-subscript-wrapper {
+        top: calc(100% - 1em) !important;
+    }
+}

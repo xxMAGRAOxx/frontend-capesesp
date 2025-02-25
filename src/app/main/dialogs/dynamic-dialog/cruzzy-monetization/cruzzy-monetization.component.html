@@ -1,0 +1,18 @@
+<div [class]="data.class" [fxLayout]="data.fxLayout ? data.fxLayout : 'row'" fxLayoutAlign="start start"
+    [style]="data.style">
+    <div fxFlex fxLayoutAlign="start center" class="tag ng-star-inserted w-100-p"
+        style="padding-top: 0px; margin: 0px; background-color: white;">
+        <mat-icon>monetization_on</mat-icon>
+        <div class="tag-label" style="padding-left: 6px;">
+            {{ data.label | translate }} : {{ data.value | myCurrency}}
+        </div>
+    </div>
+    <mat-error *ngIf="cruzzyForm.get('total_value').invalid && data.showError">
+        <ng-container *ngIf="cruzzyForm.get('total_value').hasError('min')">
+            {{'lbl_valorMinimo' | translate}}: {{cruzzyForm.get('total_value').errors.min.min | myCurrency}}
+        </ng-container>
+        <ng-container *ngIf="cruzzyForm.get('total_value').hasError('max')">
+            {{'lbl_valorMaximo' | translate}}: {{cruzzyForm.get('total_value').errors.max.max | myCurrency}}
+        </ng-container>
+    </mat-error>
+</div>

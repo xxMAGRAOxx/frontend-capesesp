@@ -1,0 +1,10 @@
+<form fxLayout="column" fxLayoutAlign="start start" [formGroup]="cruzzyForm">
+    <div class="w-100-p treeview">
+        <mat-label class="placeholder">{{ data.title | translate }}
+        </mat-label>
+        <cruzzy-dropdown-treeview [config]="_treeViewUtils.config" [items]="data.company_items"
+            (selectedChange)="onCompanySelectedChange($event)" [disabled]="data.disabled"
+            title="{{ data.hint | translate }}">
+        </cruzzy-dropdown-treeview>
+    </div>
+</form>

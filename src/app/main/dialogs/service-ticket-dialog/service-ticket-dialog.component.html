@@ -1,0 +1,517 @@
+<div class="dialog-content-wrapper w-100-p">
+    <mat-toolbar class="accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{'lbl_novoChamado' | translate }}</span>
+            <button mat-icon-button (click)="matDialogRef.close(['no']);" [disabled]="processing"
+                aria-label="Close Dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content id="this_modal" class="pt-16 px-0 m-0 pb-0">
+        <form [formGroup]="dataForm" class="internal-form mb-0 w-100-p px-24">
+            <div fxLayout="column" fxLayoutAlign="start start" class="w-100-p">
+                <div *ngIf="role == 'admin'" class="w-100-p" fxFlex fxLayout="column">
+                    <div class="message-box warning mb-8" *ngIf="dataForm.get('related_service_ticket_id').value">
+                        {{ 'lbl_solicitacaoRelacionada' | translate }} -
+                        #{{dataForm.get('related_service_ticket_id').value}}
+                    </div>
+                    <div fxFlex fxLayoutAlign="space-between center" class="pb-8 pl-4" *ngIf="!isRefundable">
+                        <mat-radio-group aria-label="Tipo de Solicitação" formControlName="employee_admin"
+                            class="w-100-p">
+                            <mat-radio-button (change)="loadServiceType($event, 'C')" [value]="true" [checked]="true">{{
+                                'lbl_colaborador' | translate }}
+                            </mat-radio-button>
+                            <mat-radio-button (change)="loadServiceType($event, 'A')" [value]="false">{{
+                                'lbl_outroUsuarioAdministrador' | translate
+                                }}</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)"
+                        *ngIf="dataForm.get('on_behalf_of').value" id="requesting_employee_id"
+                        appendTo="#requesting_employee_id" notFoundText="{{ 'lbl_semResultados' | translate }}"
+                        appearance="outline" floatLabel="always" [clearable]="false"
+                        formControlName="requesting_employee_id" name="requesting_employee_id"
+                        placeholder="{{ 'lbl_nmFuncionario' | translate }}"
+                        title="{{ 'hint_nmFuncionario' | translate }}">
+                        <ng-option *ngFor="let employee of employees" [value]="employee.id">{{
+                            employee.name}}
+                        </ng-option>
+                    </cruzzy-select>
+                    <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)"
+                        *ngIf="!dataForm.get('on_behalf_of').value && !dataForm.get('employee_admin').value"
+                        id="responsible_user_id" appendTo="#responsible_user_id"
+                        notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+                        [clearable]="false" formControlName="responsible_user_id" name="responsible_user_id"
+                        placeholder="{{ 'lbl_nmUsuario' | translate }}" title="{{ 'hint_nmUsuario' | translate }}">
+                        <ng-option *ngFor="let user of users" [value]="user.id">{{user.name}}
+                        </ng-option>
+                    </cruzzy-select>
+                    <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)"
+                        *ngIf="!dataForm.get('on_behalf_of').value && dataForm.get('employee_admin').value"
+                        id="responsible_employee_id" appendTo="#responsible_employee_id"
+                        notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+                        [clearable]="false" formControlName="responsible_employee_id" name="responsible_employee_id"
+                        placeholder="{{ 'lbl_nmFuncionario' | translate }}"
+                        title="{{ 'hint_nmFuncionario' | translate }}">
+                        <ng-option *ngFor="let employee of employees" [value]="employee.id">{{
+                            employee.name}}
+                        </ng-option>
+                    </cruzzy-select>
+
+                    <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="start start" class="">
+                        <mat-slide-toggle *ngIf="(dataForm.get('employee_admin').value && !isRefundable)"
+                            formControlName="on_behalf_of">{{
+                            'lbl_solicitarEmNomeDe' | translate }}
+                        </mat-slide-toggle>
+                    </div>
+                </div>
+
+            </div>
+            <div *ngIf="serviceTypeAllowedOpening" fxLayout="column" fxLayoutAlign="start start" class="w-100-p">
+                <div *ngIf="role == 'support' && user.customer_id == 25" class="w-100-p">
+                    <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)" id="user_id"
+                        appendTo="#user_id" notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline"
+                        floatLabel="always" [clearable]="false" formControlName="requesting_user_id"
+                        name="requesting_user_id" placeholder="{{ 'lbl_nmUsuario' | translate }}"
+                        title="{{ 'hint_nmUsuario' | translate }}">
+                        <ng-option *ngFor="let user of users" [value]="user.id">{{
+                            user.customer_name +' - '+ user.name}}
+                        </ng-option>
+                    </cruzzy-select>
+                </div>
+            </div>
+            <div fxLayout="column"
+                *ngIf="serviceTicketCategories && serviceTicketCategories.length > 0 && role !== 'support'"
+                fxLayout.gt-xs="row" fxLayoutAlign="start center" class="w-100-p">
+                <div class="w-100-p">
+                    <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)"
+                        id="service_ticket_category" appendTo="#service_ticket_category"
+                        notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+                        floatLabel="always" [clearable]="true" formControlName="service_ticket_category_id"
+                        name="service_ticket_category_id" placeholder="{{ 'lbl_categoria' | translate }}"
+                        title="{{ 'lbl_categoria' | translate }}">
+                        <ng-option *ngFor="let category of serviceTicketCategories" [value]="category.id">
+                            {{ category.name | translate }}</ng-option>
+                    </cruzzy-select>
+                </div>
+            </div>
+
+            <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="start start">
+                <div class="w-100-p">
+                    <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)"
+                        id="service_type_id" appendTo="#service_type_id"
+                        notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+                        [clearable]="false" formControlName="service_type_id" name="service_type_id"
+                        (change)="onChangeServiceType()" placeholder="{{ 'lbl_nmTipoChamado' | translate }}"
+                        title="{{ 'hint_nmTipoChamado' | translate }}">
+                        <ng-option *ngFor="let type of filteredServiceTicketTypes" [value]="type.id">{{
+                            type.name}}
+                        </ng-option>
+                    </cruzzy-select>
+                </div>
+                <div class="w-30-p" style="margin-bottom: 5px;" *ngIf="this.dataForm.get('max_hours_answer').value"
+                    fxLayoutAlign='start center' style="align-self: center;">
+                    <mat-icon class="mr-8 mr-4">timer</mat-icon>
+                    <mat-form-field class="shrinked" appearance="legacy" floatLabel="always">
+                        <mat-label>{{ 'lbl_qtdHorasAtendimento' | translate }}</mat-label>
+                        <input name="max_hours_answer" formControlName="max_hours_answer" maxlength="100"
+                            title="{{ 'lbl_qtdHorasAtendimento' | translate }}" matInput readonly>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div *ngIf="serviceTypeAllowedOpening" fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="start start"
+                class="w-100-p">
+                <div class="w-70-p">
+                    <mat-slide-toggle *ngIf="!dataForm.get('employee_admin').value && hasApprove"
+                        formControlName="responsible_approve">{{
+                        'lbl_responsavelQueAprova' | translate }}
+                    </mat-slide-toggle>
+                </div>
+            </div>
+
+            <div *ngIf="role == 'admin' && type === 'A' && serviceTypeAllowedOpening" fxLayout="column">
+                <div class="w-100-p">
+                    <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)"
+                        id="related_employee_id" appendTo="#related_employee_id"
+                        notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+                        [clearable]="true" formControlName="related_employee_id" name="related_employee_id"
+                        placeholder="{{ 'lbl_colaboradorRelacionado' | translate }}"
+                        title="{{ 'lbl_colaboradorRelacionado' | translate }}">
+                        <ng-option *ngFor="let employee of employees" [value]="employee.id">{{
+                            employee.name}}
+                        </ng-option>
+                    </cruzzy-select>
+                </div>
+            </div>
+
+            <div *ngIf="serviceTypeAllowedOpening" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>{{ 'lbl_nmChamado' | translate }}</mat-label>
+                    <input name="name" formControlName="name" maxlength="500" title="{{ 'hint_nmChamado' | translate }}"
+                        matInput>
+                </mat-form-field>
+            </div>
+
+            <div *ngIf="isRefundable && serviceTypeAllowedOpening" fxLayout="column" fxLayoutAlign="start start"
+                class="w-100-p">
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start start" class="w-100-p">
+                    <div class="w-100-p">
+                        <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)" id="benefit_id"
+                            appendTo="#benefit_id" notFoundText="{{ 'lbl_semResultados' | translate }}"
+                            appearance="outline" floatLabel="always" [clearable]="false" formControlName="benefit_id"
+                            name="benefit_id" placeholder="{{ 'lbl_nmBeneficio' | translate }}"
+                            title="{{ 'hint_nmBeneficio' | translate }}">
+                            <ng-option *ngFor="let benefit of benefits" [value]="benefit.id">
+                                {{benefit.name}}
+                            </ng-option>
+                        </cruzzy-select>
+                    </div>
+                </div>
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start start" class="w-100-p">
+                    <div *ngIf="allowRelatives" class="w-100-p">
+                        <cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)"
+                            id="relative_id" appendTo="#relative_id"
+                            notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline"
+                            floatLabel="always" [clearable]="true"
+                            [multiple]="walletDocumentsSettings?.allow_multiple_dependents" formControlName="relatives"
+                            name="relatives"
+                            placeholder="{{ (walletDocumentsSettings?.allow_multiple_dependents ? 'lbl_dependentes' : 'lbl_nmDependente') | translate }}"
+                            title="{{ 'hint_nmDependente' | translate }}">
+                            <ng-option *ngFor="let relative of relativesFiltered" [value]="relative.id">
+                                {{relative.name}}
+                            </ng-option>
+                        </cruzzy-select>
+                    </div>
+                </div>
+                <div *ngIf="refundLimit > 0" fxFlex fxLayoutAlign="start center" class="tag ng-star-inserted w-100-p"
+                    style="padding-bottom: 8px; padding-top: 0px; margin: 0px; background-color: white;">
+                    <mat-icon>monetization_on</mat-icon>
+                    <div class="tag-label" style="padding-left: 6px;">{{ 'lbl_valorLimiteAnualReembolso' | translate }}
+                        : {{ refundLimit |
+                        myCurrency}}
+                    </div>
+                </div>
+                <div *ngIf="refundLimit > 0" fxFlex fxLayoutAlign="start center" class="tag ng-star-inserted w-100-p"
+                    style="padding-bottom: 8px; padding-top: 0px; margin: 0px; background-color: white">
+                    <mat-icon>monetization_on</mat-icon>
+                    <div class="tag-label" style="padding-left: 6px;">{{ 'lbl_valorLimiteAnualReembolsoUtilizado' |
+                        translate }} : {{ refundUsed |
+                        myCurrency}}</div>
+                </div>
+                <div *ngIf="refundLimit > 0" fxFlex fxLayoutAlign="start center" class="tag ng-star-inserted w-100-p"
+                    style="padding-bottom: 12px; padding-top: 0px; margin: 0px; background-color: white">
+                    <mat-icon>monetization_on</mat-icon>
+                    <div class="tag-label" style="padding-left: 6px;">{{ 'lbl_valorLimiteAnualRemanescente' |
+                        translate }} : {{ refundLimit - refundUsed |
+                        myCurrency}}</div>
+                </div>
+                <div *ngIf="walletDocumentsSettings?.request_fiscal_documents" fxLayout="column" fxLayout.gt-xs="row"
+                    fxLayoutAlign="start start" class="w-100-p">
+                    <cruzzy-select *ngIf="providers?.length > 0"
+                        (removeFromList)="_generalServices.setNullForm(dataForm, $event)" id="provider_id"
+                        appendTo="#provider_id" class="w-33-p" notFoundText="{{ 'lbl_semResultados' | translate }}"
+                        appearance="outline" floatLabel="always" [clearable]="true" formControlName="provider_id"
+                        name="provider_id" placeholder="{{ 'lbl_nmPrestadoresMaisUsados' | translate }}"
+                        title="{{ 'hint_nmPrestadoresMaisUsados' | translate }}" (change)="selectedProvider($event)">
+                        <ng-option *ngFor="let provider of providers" [value]="provider.vat">
+                            {{ provider.name }}</ng-option>
+                    </cruzzy-select>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-33-p">
+                        <mat-label>{{ 'lbl_numeroNotaFiscal' | translate }}</mat-label>
+                        <input name="document_number" formControlName="document_number"
+                            title="{{ 'hint_numeroNotaFiscal' | translate }}" matInput>
+                    </mat-form-field>
+                    <cruzzy-date-picker class="w-33-p" [formGroup]="dataForm" [componentId]="'emissaoNotaDatePicker'"
+                        [titleText]="'hint_dataEmissaoNota'" [labelText]="'lbl_dataEmissaoNota'" [minDate]="noteMinDate"
+                        [maxDate]="noteMaxDate" [fieldName]="'emission_date'">
+                    </cruzzy-date-picker>
+                </div>
+                <div *ngIf="walletDocumentsSettings?.request_fiscal_documents" fxLayout="column" fxLayout.gt-xs="row"
+                    fxLayoutAlign="start start" class="w-100-p">
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-33-p">
+                        <mat-label>{{ 'lbl_nrCnpjCpf' | translate }}</mat-label>
+                        <input name="vat" formControlName="vat" title="{{ 'lbl_nrCnpjCpf' | translate }}"
+                            mask="CPF_CNPJ" matInput>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                        <mat-label>{{ 'lbl_nmPrestador' | translate }}</mat-label>
+                        <input name="provider_name" formControlName="provider_name"
+                            title="{{ 'hint_nmPrestador' | translate }}" matInput>
+                    </mat-form-field>
+                </div>
+                <div fxFlex fxLayoutAlign="start center" class="tag ng-star-inserted w-100-p"
+                    style="padding-bottom: 12px; padding-top: 0px; background-color: white">
+                    <mat-icon>monetization_on</mat-icon>
+                    <div class="tag-label" style="padding-left: 6px;">{{ 'lbl_saldo' | translate }} : {{ balance |
+                        myCurrency}}</div>
+                </div>
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start start" class="w-100-p">
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-33-p">
+                        <mat-label>{{ 'lbl_valorServico' | translate }}</mat-label>
+                        <input name="service_value" formControlName="service_value"
+                            title="{{ 'hint_valorServico' | translate }}" matInput currencyMask>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="allowReceived" appearance="outline" floatLabel="always" class="w-33-p">
+                        <mat-label>{{ (isPercentualReceived ? 'lbl_PercentualCoberto' : 'lbl_valorRecebido') | translate
+                            }}</mat-label>
+                        <input name="received_value" formControlName="received_value"
+                            title="{{ 'hint_valorRecebido' | translate }}" matInput currencyMask
+                            [readonly]="receivedReadOnly">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-34-p">
+                        <mat-label>{{ 'lbl_valorSolicitado' | translate }}</mat-label>
+                        <input name="requested_value" formControlName="requested_value" [readonly]="allowReceived"
+                            title="{{ 'hint_valorSolicitado' | translate }}" matInput currencyMask>
+                    </mat-form-field>
+                </div>
+                <!-- adicionar texto de informacao -->
+                <div *ngIf="dataForm.get('justification_motive').value" fxFlex fxLayout="column"
+                    fxLayoutAlign="start start" class="w-100-p">
+                    <div class="w-100-p p-4 pb-8 pt-8">
+                        <div class="message-box warning" style="margin-bottom: 2px;"
+                            *ngIf="dataForm.get('justification_motive').value.includes('S')">
+                            <mat-icon class="mr-8">warning</mat-icon>
+                            {{'msg_valorRequisitadoMaiorQueSaldo' | translate}}
+                        </div>
+                        <div class="message-box warning" style="margin-bottom: 2px;"
+                            *ngIf="dataForm.get('justification_motive').value.includes('P')">
+                            <mat-icon class="mr-8">warning</mat-icon>
+                            {{'msg_dataDaNotaMaiorQueDataMaxima' | translate}}
+                        </div>
+                        <div class="message-box error" style="margin-bottom: 2px;"
+                            *ngIf="dataForm.get('justification_motive').value.includes('L')">
+                            <mat-icon class="mr-8">warning</mat-icon>
+                            {{'msg_valorRequisitadoMaiorQueReembolsoAnual' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <mat-form-field *ngIf="dataForm.get('justification_motive').value" class="w-100-p" appearance="outline"
+                    fxFlex>
+                    <mat-label>{{'app_lbl_605' | translate}}</mat-label>
+                    <textarea rows="10" name="justification" formControlName="justification" maxlength="500"
+                        matInput></textarea>
+                </mat-form-field>
+            </div>
+            <div *ngIf="serviceTypeAllowedOpening" fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="start start"
+                class="">
+                <div class="w-100-p">
+                    <cruzzy-html-editor [formGroup]="dataForm" control="description">
+                    </cruzzy-html-editor>
+                </div>
+            </div>
+            <div *ngIf="description && serviceTypeAllowedOpening" fxLayout="column" fxLayoutAlign="start start">
+                <div class="w-100-p p-4 pb-8 pt-8">
+                    <div class="message-box warning" style="margin-bottom: 2px;">
+                        <mat-icon class="mr-8">warning</mat-icon>
+                        {{description}}
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="role == 'admin' && serviceTypeAllowedOpening" fxLayout="column" fxLayoutAlign="start start"
+                class="mb-8">
+                <div class="w-100-p"><cruzzy-select (removeFromList)="_generalServices.setNullForm(dataForm, $event)"
+                        id="observables_related" appendTo="#observables_related" class="custom"
+                        notFoundText="{{ 'lbl_semResultados' | translate }}" dropdownPosition="top"
+                        placeholder="{{ 'lbl_observadores'| translate }}" appearance="outline" floatLabel="always"
+                        formControlName="observers" name="observables" title="{{ 'hint_observador' | translate }}"
+                        [clearable]="true" [multiple]="true">
+                        <ng-option *ngFor="let user of observers" [value]="user.id">
+                            {{ user.name }}</ng-option>
+                    </cruzzy-select>
+                </div>
+            </div>
+
+            <div *ngIf="role == 'admin' && !dataForm.get('on_behalf_of').value && dataForm.get('employee_admin').value && hasFiles() && serviceTypeAllowedOpening"
+                class="mb-16">
+                <div class="w-100-p p-4">
+                    <div class="message-box info" style="margin-bottom: 2px;">
+                        <mat-icon class="mr-8">info</mat-icon>
+                        {{'lbl_arquivosSolicitadosResposta' | translate}}
+                    </div>
+                </div>
+            </div>
+
+            <mat-accordion multi *ngIf="serviceTypeAllowedOpening">
+                <mat-expansion-panel [expanded]="true" hideToggle="true">
+                    <mat-expansion-panel-header class="disabled-pointer">
+                        <mat-panel-title>
+                            <div fxFlex fxLayoutAlign="space-between center">
+                                <div fxFlex="100" fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-icon role="img"
+                                        class="mat-icon notranslate m-0 mr-16 secondary-text material-icons mat-icon-no-color"
+                                        aria-hidden="true">attachment</mat-icon>
+                                    <div class="h2 secondary-text">
+                                        <span>{{'lbl_anexos' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div *ngIf="dataForm.get('on_behalf_of').value || user.type == 'employee' || !dataForm.get('employee_admin').value"
+                        class="member-chips w-100-p" formArrayName="requiredFiles">
+                        <div *ngFor='let item of getControls("required"); let i=index;' [formGroupName]='i'
+                            class="w-100-p">
+                            <span fxFlex fxLayout="column" fxLayoutAlign="space-around center"
+                                class="w-100-p section-files">
+                                <mat-form-field fxFlex appearance="legacy" floatLabel="always" class="w-100-p mt-16">
+                                    <mat-label>{{ 'red_nmArquivo' | translate }}</mat-label>
+                                    <input name="document_name" formControlName="document_name"
+                                        title="{{ 'red_nmArquivo' | translate }}" maxlength="5000" matInput readonly />
+                                </mat-form-field>
+                                <cruzzy-input-file style="margin-top: -10px; " fxFlex [inputForm]="item"
+                                    class="pr-sm-8 w-100-p" [fileTypes]="this.allowedFileTypes"
+                                    [required]="this.dataForm.get('on_behalf_of').value || user.type == 'employee' || !dataForm.get('employee_admin').value && !serviceTypeMerelyInformative"
+                                    [disabled]="serviceTypeMerelyInformative" [readOnlyFile]="serviceTypeMerelyInformative">
+                                </cruzzy-input-file>
+                                <div *ngIf="getControlsModels(i).length" class="w-100-p"
+                                    formArrayName="required_file_model" fxFlex fxLayout="column" fxLayoutGap="10px"
+                                    fxLayoutAlign="center start" style="padding: 10px 0;">
+                                    <div *ngFor="let required of getControlsModels(i) let r=index" [formGroupName]='r'
+                                        fxFlex fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px"
+                                        class="w-100-p pr-12">
+                                        <cruzzy-input-file class="ml-4" [inputForm]="required" [onlyPreview]="true"
+                                            [filePreview]="true" [fileTypes]="this.allowedFileTypes"
+                                            [fileDownload]="true" [readOnlyFile]="true">
+                                        </cruzzy-input-file>
+                                        <mat-form-field appearance="legacy" floatLabel="always"
+                                            class="shrinked w-100-p ml-12">
+                                            <mat-label>{{ 'lbl_nmArquivoModelo' | translate }}</mat-label>
+                                            <input name="document_name" formControlName="document_name"
+                                                title="{{ 'lbl_nmArquivoModelo' | translate }}" maxlength="5000"
+                                                matInput readonly style="text-overflow: ellipsis;" />
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="member-chips" formArrayName="files">
+                        <div *ngFor='let item of getControls(); let i=index;' [formGroupName]='i'>
+                            <span fxFlex fxLayout="column" fxLayoutAlign="center center section-files">
+                                <mat-form-field fxFlex appearance="outline" floatLabel="always" class="w-100-p mt-16">
+                                    <mat-label>{{ 'red_nmArquivo' | translate }}</mat-label>
+                                    <input name="document_name" formControlName="document_name"
+                                        title="{{ 'red_nmArquivo' | translate }}" maxlength="5000" matInput />
+                                </mat-form-field>
+                                <span fxFlex fxLayoutAlign="space-around center" class="w-100-p">
+                                    <cruzzy-input-file fxFlex="99" [inputForm]="item" [required]="true"
+                                        [fileTypes]="this.allowedFileTypes" class="pr-sm-8">
+                                    </cruzzy-input-file>
+                                    <button mat-mini-fab class="custom-mini-fab-button" color="warn" aria-label="remove"
+                                        (click)='deleteFile(i)'>
+                                        <mat-icon class="mr-0">delete</mat-icon>
+                                    </button>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div *ngIf="(this.dataForm.get('files').value.length > 0 || this.dataForm.get('files').value.length === 0 && (this.dataForm.controls.requiredFiles.valid || !dataForm.get('on_behalf_of').value))"
+                        class="mt-8">
+                        <button mat-raised-button color="accent" class="m-0 mb-8"
+                            [disabled]="this.dataForm.get('files').invalid || serviceTypeMerelyInformative" (click)="newFile()" aria-label="SAVE">
+                            <mat-icon>add</mat-icon>{{ 'btn_adicionarNovoArquivo' | translate }}
+                        </button>
+                    </div>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel
+                    *ngIf="this.dataForm.get('informational_links')?.value.length > 0 && serviceTypeAllowedOpening"
+                    [expanded]="true" hideToggle="false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <div fxFlex fxLayoutAlign="space-between center">
+                                <div fxFlex="100" fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-icon role="img"
+                                        class="mat-icon notranslate m-0 mr-16 secondary-text material-icons mat-icon-no-color"
+                                        aria-hidden="true">info</mat-icon>
+                                    <div class="h3 secondary-text">
+                                        <span>{{'lbl_referenciasExternas' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="member-chips" formArrayName="informational_links">
+                        <div *ngFor='let item of getInformationalLinks(); let i=index;' [formGroupName]='i'
+                            class="w-100-p">
+                            <span class="list-card-description-icon" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                                <button aria-label="more" mat-icon-button (click)="openUrl(item.get('link').value)">
+                                    <mat-icon class="s-18" style="margin-right: 0px;">open_in_new</mat-icon>
+                                </button>
+                                <span style="padding-top: 3px; margin-left: -3px;"><a href="{{item.get('link').value}}"
+                                        target="_blank">{{item.get('name').value}}</a></span>
+                            </span>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel
+                    *ngIf="this.dataForm.get('informational_files')?.value.length > 0 && serviceTypeAllowedOpening"
+                    [expanded]="true" hideToggle="false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <div fxFlex fxLayoutAlign="space-between center">
+                                <div fxFlex="100" fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-icon role="img"
+                                        class="mat-icon notranslate m-0 mr-16 secondary-text material-icons mat-icon-no-color"
+                                        aria-hidden="true">info</mat-icon>
+                                    <div class="h3 secondary-text">
+                                        <span>{{'lbl_arquivosModeloComplementares' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div *ngIf="serviceTypeAllowedOpening" class="member-chips" formArrayName="informational_files">
+                        <div *ngFor='let item of getInformationalControls(); let i=index;' [formGroupName]='i'
+                            class="w-100-p">
+                            <span class="section-file p-0 pb-16 mb-16" fxFlex fxLayout="column"
+                                fxLayoutAlign="center start">
+                                <mat-form-field fxFlex fxLayout="row" fxLayoutAlign="start center" appearance="legacy"
+                                    floatLabel="always" class="w-50-p mt-16">
+                                    <mat-label>{{ 'red_nmArquivo' | translate }}</mat-label>
+                                    <input fxFlex fxLayout="row" fxLayoutAlign="start center" name="document_name"
+                                        formControlName="document_name" title="{{ 'red_nmArquivo' | translate }}"
+                                        maxlength="5000" matInput readonly />
+                                </mat-form-field>
+                                <cruzzy-input-file fxFlex fxLayout="row" fxLayoutAlign="start center"
+                                    appearance="legacy" class="ml-4" [inputForm]="item"
+                                    [filePreview]="item.get('file_type').value!=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"
+                                    [fileDownload]="item.get('file_type').value==='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"
+                                    [disabled]="serviceTypeMerelyInformative" [readOnlyFile]="serviceTypeMerelyInformative">
+                                    [readOnlyFile]="true">
+                                </cruzzy-input-file>
+                            </span>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </form>
+        <div *ngIf="!serviceTypeAllowedOpening && serviceTypeAllowedOpeningType" class="message-box warning m-16 mb-24 mt-0">
+            {{ 'msg_naoFoiPossivelAbrirForaDeData' | translate }}{{initialDate | date: 'dd/MM/yyyy'}} {{'lbl_a' |
+            translate}} {{finalDate | date: 'dd/MM/yyyy'}}
+        </div>
+        <div *ngIf="!serviceTypeAllowedOpeningType && initialDate" class="message-box warning m-16 mb-24 mt-0">
+            <div>
+                {{ 'msg_naoFoiPossivelAbrirDesseTipo' | translate }}{{initialDate | date: 'dd/MM/yyyy'}}
+            </div>
+        </div>
+        <div *ngIf="!serviceTypeAllowedOpeningType && !initialDate && !finalDate" class="message-box warning m-16 mb-24 mt-0">
+            <div>
+                {{ 'lbl_jaExisteUmaSolicitacaoAbertaDesseTipo' | translate }}
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions class="m-0 py-16 px-24" fxLayout="row" fxLayoutAlign="start center">
+        <button [disabled]="dataForm.invalid || processing || !serviceTypeAllowedOpening || serviceTypeMerelyInformative" mat-raised-button
+            color="accent" (click)="saveTicket()" class="save-button" aria-label="save" class="mat-raised-button">
+            {{ 'lbl_abrirChamado' | translate }}
+        </button>
+        <button mat-raised-button [disabled]="processing" (click)="cancel()" class="save-button" aria-label="SAVE"
+            class="mat-raised-button">
+            {{ 'btn_cancelar' | translate }}
+        </button>
+    </div>
+</div>

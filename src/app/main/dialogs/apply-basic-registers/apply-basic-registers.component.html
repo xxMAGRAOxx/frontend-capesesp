@@ -1,0 +1,111 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{'lbl_aplicarCadastrosBasicos' | translate }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-24 m-0 pb-0" fusePerfectScrollbar
+        [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+        <form [formGroup]="dataForm">
+            <div class="message-box info mb-16 mt-8 w-100-p">
+                {{ 'msg_cadastroBasicos' | translate }}
+            </div>
+            <div fxLayout="column" fxLayoutAlign="start start">
+                <div class="w-100-p" fxFlex fxLayout="column" fxLayout.gt-sm="row">
+                    <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start">
+                        <mat-slide-toggle formControlName="users">
+                            {{ 'aba_usuarios' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="positions">
+                            {{ 'aba_cargo' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="occupations">
+                            {{ 'aba_funcao' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="salary_ranges">
+                            {{ 'aba_faixaSalarial' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="organizational_units">
+                            {{ 'aba_centroCusto' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="accounts">
+                            {{ 'aba_verba' | translate }}</mat-slide-toggle>
+                    </div>
+                    <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start">
+                        <mat-slide-toggle formControlName="eligibility_groups">
+                            {{ 'aba_grupoElegibilidade' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="period_types">
+                            {{ 'aba_tipoPeriodo' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="reason_points_request">
+                            {{ 'aba_motivosTrocaPontos' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="reason_request">
+                            {{ 'aba_solicitacaoEleicaoMotivo' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="holidays">
+                            {{ 'aba_feriados' | translate }}</mat-slide-toggle>
+                    </div>
+                </div>
+                <mat-divider
+                    *ngIf="_generalServices.user.customer_parameters.flexible_benefits_module || _generalServices.user.customer_parameters.fixed_benefits_module || _generalServices.user.customer_parameters.refundable_module"
+                    fxFlex class="my-8 w-100-p"></mat-divider>
+                <div class="w-100-p" fxFlex fxLayout="column" fxLayout.gt-sm="row">
+                    <div *ngIf="_generalServices.user.customer_parameters.flexible_benefits_module || _generalServices.user.customer_parameters.fixed_benefits_module || _generalServices.user.customer_parameters.refundable_module"
+                        fxFlex="50" fxLayout="column" fxLayoutAlign="start start">
+                        <mat-slide-toggle formControlName="providers">
+                            {{ 'aba_fornecedor' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="benefit_categories">
+                            {{ 'aba_beneficioCategoria' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="benefits">
+                            {{ 'aba_beneficio' | translate }}</mat-slide-toggle>
+                    </div>
+                    <div *ngIf="_generalServices.user.customer_parameters.fixed_benefits_module || _generalServices.user.customer_parameters.flexible_benefits_module"
+                        fxFlex="50" fxLayout="column" fxLayoutAlign="start start">
+                        <mat-slide-toggle formControlName="benefits_policy">
+                            {{ 'aba_politica' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="enrollment_period_automatic">
+                            {{ 'aba_periodoEleicaoAutomatico' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="benefits_documents">
+                            {{ 'aba_termosBeneficios' | translate }}</mat-slide-toggle>
+                    </div>
+                </div>
+                <mat-divider *ngIf="_generalServices.user.customer_parameters.admission_module" fxFlex
+                    class="my-8 w-100-p"></mat-divider>
+                <div *ngIf="_generalServices.user.customer_parameters.admission_module" class="w-100-p" fxFlex
+                    fxLayout="column" fxLayout.gt-sm="row">
+                    <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start">
+                        <mat-slide-toggle formControlName="admission_document_settings">
+                            {{ 'aba_configuracaoAdmissao' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="admission_files">
+                            {{ 'aba_arquivosAdmissao' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="admission_text_model">
+                            {{ 'aba_modeloPropostaAdmissao' | translate }}</mat-slide-toggle>
+                    </div>
+                    <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start">
+                        <mat-slide-toggle formControlName="admission_document_model">
+                            {{ 'aba_termosContratos' | translate }}</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="admission_document_kits">
+                            {{ 'aba_kitTermosContratos' | translate }}</mat-slide-toggle>
+                    </div>
+                </div>
+                <mat-divider
+                    *ngIf="_generalServices.user.customer_parameters.helpdesk_module || _generalServices.user.customer_parameters.refundable_module"
+                    fxFlex class="my-8 w-100-p"></mat-divider>
+                <div *ngIf="_generalServices.user.customer_parameters.helpdesk_module || _generalServices.user.customer_parameters.refundable_module"
+                    class="w-100-p" fxFlex fxLayout="column" fxLayout.gt-sm="row">
+                    <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start">
+                        <mat-slide-toggle formControlName="service_ticket_groups">
+                            {{ 'aba_gruposAtendimento' | translate }}</mat-slide-toggle>
+                    </div>
+                    <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start">
+                        <mat-slide-toggle formControlName="service_ticket_types">
+                            {{ 'aba_tiposAtendimento' | translate }}</mat-slide-toggle>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions class="m-0 py-16 px-24" fxLayout="row" fxLayoutAlign="start center">
+        <button mat-raised-button color="primary" (click)="confirm()" [disabled]="dataForm.invalid"
+            class="mat-raised-button mb-4 mobile-button-100">
+            <mat-icon>check_circle_outline</mat-icon> {{ 'btn_confirmarRequisicao' | translate }}
+        </button>
+        <button mat-raised-button color="" (click)="cancel()" class="save-button"
+            class="mat-raised-button  mb-4 mobile-button-100">
+            {{ 'btn_cancelar' | translate }}
+        </button>
+    </div>
+</div>

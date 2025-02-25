@@ -1,0 +1,54 @@
+<div class="dialog-content-wrapper app-document-view">
+    <mat-toolbar class="mat-toolbar mat-accent m-0 mat-toolbar-multiple-rows">
+        <mat-toolbar-row fxflex="" fxlayout="row" fxlayoutalign="space-between center" class="mat-toolbar-row">
+            <span class="title dialog-title">{{ 'lbl_documento' | translate }}</span>
+            <button mat-icon-button="" (click)="close()" aria-label="Close dialog"
+                class="mat-focus-indicator mat-icon-button mat-button-base">
+                <span class="mat-button-wrapper">
+                    <mat-icon role="img" class="mat-icon notranslate material-icons mat-icon-no-color"
+                        aria-hidden="true" data-mat-icon-type="font">close</mat-icon>
+                </span>
+                <span matripple="" class="mat-ripple mat-button-ripple mat-button-ripple-round"></span>
+                <span class="mat-button-focus-overlay"></span>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <mat-dialog-content id="document_content">
+        <div class="p-24 m-0">
+            <cruzzy-html-editor [onlyViewer]="true" [data]="document.text" format="html" theme="snow">
+            </cruzzy-html-editor>
+        </div>
+    </mat-dialog-content>
+
+    <div mat-dialog-actions="" fxlayout="row" fxlayoutalign="start center fxLayoutGap"
+        class="mat-dialog-actions m-0 p-8" ng-reflect-fx-layout="row"
+        ng-reflect-fx-layout-align="start center fxLayoutGap">
+        <div *ngIf="isAccepted" class="accepted-date">
+            <p> {{ 'lbl_aceito' | translate }}: {{ document.dateAccepted }}</p>
+        </div>
+        <form *ngIf="!isAccepted" [formGroup]="acceptForm">
+            <mat-checkbox formControlName="accept">
+                {{ 'lbl_aceito_documento' | translate }}
+            </mat-checkbox>
+        </form>
+        <div>
+            <button (click)="print()" mat-raised-button class="btn-print" aria-label="SAVE">
+                <span class="mat-button-wrapper">
+                    <mat-icon role="img" class="mat-icon notranslate material-icons mat-icon-no-color"
+                        aria-hidden="true" data-mat-icon-type="font">print</mat-icon> Imprimir
+                </span>
+            </button>
+            <button class="btn-confirmar" mat-raised-button color="primary" (click)="acceptDocument()"
+                [disabled]="!this.acceptForm.valid" *ngIf="!isAccepted">
+                <mat-icon>check_circle</mat-icon>
+                <span class="ml-4"> {{ 'btn_confirmarDocumento' | translate }} </span>
+            </button>
+            <button *ngIf="isAccepted" mat-raised-button color="accent" (click)="close()" class="mr-4 save-button"
+                aria-label="SAVE" class="mat-raised-button mat-button-base mr-4 mobile-button-100">
+                {{ 'btn_ok' | translate }}
+            </button>
+        </div>
+    </div>
+</div>
+<iframe class="print-div" id="printf" name="printf" [srcdoc]="iframeHtml | safeHtml"></iframe>

@@ -1,0 +1,39 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{title | translate }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar
+        [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+        <img src="{{ image }}" alt="{{ image }}" class="imagem-confirm" *ngIf="image" />
+        {{messageBox ? '':message}}
+        <div *ngIf="messageBox" [class]="'message-box ' + messageBox ">
+            <mat-icon class="">{{messageIcon}}</mat-icon>
+            <span class="ml-16">{{ message | translate}}
+                <div class="mt-12" *ngFor="let link of links" (click)="actionLink(link.id); confirm()">
+                    <span style="cursor: pointer; text-decoration: underline;">{{link.name}}</span>
+                </div>
+            </span>
+        </div>
+        <div class="mt-20" *ngIf="!messageBox && links && links.length > 0">
+            <div *ngFor="let link of links" (click)="actionLink(link.id); confirm()">
+                <span style="cursor: pointer; text-decoration: underline;">{{link.name}}</span>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button mat-raised-button (click)="sendFTP()" class="save-button" aria-label="SAVE" color="accent"
+            class="mat-raised-button mr-4">
+            <mat-icon>cloud_upload</mat-icon> {{ buttonSendFTP | translate }}
+        </button>
+        <button mat-raised-button (click)="download()" class="save-button" aria-label="SAVE"
+            class="mat-raised-button mat-button-base mr-4 ml-4">
+            <mat-icon>cloud_download</mat-icon> {{ buttonDownload | translate }}
+        </button>
+        <button mat-raised-button (click)="cancel()" class="save-button" aria-label="SAVE"
+            class="add-todo-button mat-raised-button m-4">
+            {{ 'btn_cancelar' | translate }}
+        </button>
+    </div>
+</div>

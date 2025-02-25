@@ -1,0 +1,99 @@
+<mat-accordion [multi]="false">
+    <mat-expansion-panel [expanded]="data.expanded">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <mat-icon>{{data.icon}}</mat-icon>
+                {{data.panelTitle | translate }}
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div>
+            <div class="pt-8">
+                {{ data.panelMessage | translate }}
+            </div>
+            <div *ngIf="data.form?.length > 0">
+                <div *ngFor="let formItem of data.form">
+
+                    <div *ngIf="formItem.cruzzy_accordion?.length > 0" class="w-100-p ">
+                        <div *ngFor="let accordion of formItem.cruzzy_accordion" fxLayout="row"
+                            fxLayoutAlign="start start">
+                            <dialog-cruzzy-accordion [cruzzyForm]="cruzzyForm"
+                                [data]="accordion"></dialog-cruzzy-accordion>
+                        </div>
+                    </div>
+
+                    <div *ngIf="formItem.cruzzy_message_box?.length > 0" class="w-100-p ">
+                        <div *ngFor="let message_box of data.message-box">
+                            <dialog-cruzzy-message-box [cruzzyForm]="cruzzyForm"
+                                [data]="message_box"></dialog-cruzzy-message-box>
+                        </div>
+                    </div>
+
+                    <div *ngIf="formItem.cruzzy_tree_view?.length > 0" class="w-100-p ">
+                        <div *ngFor="let tree_view of formItem.cruzzy_tree_view" fxLayout="column" fxLayout.gt-sm="row"
+                            fxLayoutAlign="start start">
+                            <dialog-cruzzy-tree-view [cruzzyForm]="cruzzyForm" [data]="tree_view" fxLayout="column"
+                                fxLayoutAlign="start start" class="w-100-p">
+                            </dialog-cruzzy-tree-view>
+                        </div>
+                    </div>
+
+                    <div *ngIf="formItem.cruzzy_select?.items?.length > 0" class="w-100-p "
+                        fxLayout="formItem.cruzzy_select.layout" fxLayoutAlign="start start">
+                        <div *ngFor="let select of formItem.cruzzy_select?.items" class="mr-12"
+                            [style]="formItem.cruzzy_select.width">
+                            <dialog-cruzzy-selection [cruzzyForm]="cruzzyForm" [data]="select">
+                            </dialog-cruzzy-selection>
+                        </div>
+                    </div>
+
+                    <div *ngIf="formItem.cruzzy_input?.items?.length > 0" class="w-100-p "
+                        fxLayout="formItem.cruzzy_input.layout" fxLayoutAlign="start start">
+                        <div *ngFor="let input of formItem.cruzzy_input?.items" class="mr-12"
+                            [style]="formItem.cruzzy_input.width">
+                            <dialog-cruzzy-input [cruzzyForm]="cruzzyForm" [data]="input">
+                            </dialog-cruzzy-input>
+                        </div>
+                    </div>
+
+                    <div *ngIf="formItem.cruzzy_checkbox?.length > 0" class="w-100-p"
+                        fxLayout="formItem.cruzzy_checkbox.layout" fxLayoutAlign="start start">
+                        <div *ngFor="let checkbox of formItem.cruzzy_checkbox" fxLayout="row"
+                            fxLayoutAlign="start start">
+                            <dialog-cruzzy-checkbox [cruzzyForm]="cruzzyForm" [data]="checkbox">
+                            </dialog-cruzzy-checkbox>
+                        </div>
+                    </div>
+
+                    <div *ngIf="formItem.cruzzy_list?.length > 0" class="w-100-p ">
+                        <div *ngFor="let list of formItem.cruzzy_list">
+                            <dialog-cruzzy-list [cruzzyForm]="cruzzyForm" [data]="list"></dialog-cruzzy-list>
+                        </div>
+                    </div>
+
+                    <div *ngIf="formItem.cruzzy_file?.length > 0" class="w-100-p ">
+                        <div *ngFor="let file of formItem.cruzzy_file">
+                            <dialog-cruzzy-file [cruzzyForm]="cruzzyForm" [data]="file"></dialog-cruzzy-file>
+                        </div>
+                    </div>
+
+                    <div *ngIf="formItem.cruzzy_text_area?.length > 0" class="w-100-p ">
+                        <div *ngFor="let text_area of formItem.cruzzy_text_area" fxLayout="row"
+                            fxLayoutAlign="start start">
+                            <dialog-cruzzy-text-area [cruzzyForm]="cruzzyForm"
+                                [data]="text_area"></dialog-cruzzy-text-area>
+                        </div>
+                    </div>
+
+                    <div *ngIf="formItem.cruzzy_html_editor?.length > 0" class="w-100-p ">
+                        <div *ngFor="let editor of formItem.cruzzy_html_editor" fxLayout="row"
+                            fxLayoutAlign="start start">
+                            <dialog-cruzzy-html-editor [cruzzyForm]="cruzzyForm" [data]="editor">
+                            </dialog-cruzzy-html-editor>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>

@@ -1,0 +1,103 @@
+@import "src/@fuse/scss/fuse";
+
+.contact-form-dialog {
+    @include media-breakpoint("xs") {
+        width: 100%;
+    }
+
+    @include media-breakpoint("gt-xs") {
+        width: 500px;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+
+        .mat-toolbar {
+            flex: 1 0 auto;
+            min-height: initial;
+        }
+
+        .toolbar-bottom {
+            height: auto;
+        }
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.dropzone {
+    padding: 0px !important;
+}
+.fallback {
+    height: 100%;
+}
+dropzone {
+    height: 100% !important;
+}
+.dropzone .dz-message {
+    margin: 0px !important;
+    height: 100%;
+}
+dropzone > .dropzone.dz-wrapper {
+    height: 100%;
+    overflow: hidden !important;
+}
+dropzone > .dropzone.dz-wrapper .dz-message .dz-text {
+    padding: 2px !important;
+}
+dropzone > .dropzone.dz-wrapper .dz-message {
+    max-width: 100% !important;
+    min-width: 100% !important;
+    border: 0px !important;
+}
+
+dropzone>.dropzone.dz-wrapper.dz-single .dz-preview {
+    height: 100%;
+    width: 100% !important;
+}
+dropzone>.dropzone.dz-wrapper .dz-preview {
+    margin: 0px !important;
+}
+.dropzone .dz-preview .dz-remove {
+    position: relative !important;
+    margin-top: -50px;
+    padding: 28px;
+    z-index: 100;
+}
+
+.cropper-modal {
+    background-color: #000;
+    opacity: 0.7;
+}
+
+#ok {
+    font-family: Muli, Helvetica Neue, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 50px !important;
+}
+
+.input-icon input {
+    padding-left: 50px;
+}
+.input-icon-left {
+    position: absolute;
+    top: 46%;
+    transform: translateY(-50%);
+    left: 30px;
+    height: 25px;
+}
+.input-icon-left i {
+    color: #696969 !important;
+    font-size: 25px;
+}
+
+.image {
+    color: white;
+    width: 16px;
+    height: 16px;
+}

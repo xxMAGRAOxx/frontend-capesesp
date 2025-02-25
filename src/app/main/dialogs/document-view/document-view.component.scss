@@ -1,0 +1,127 @@
+@import "src/@fuse/scss/fuse";
+
+.app-document-view {
+    @include media-breakpoint("xs") {
+        width: 100%;
+        min-width: 95% !important;
+        height: 95%;
+        min-height: 95% !important;
+    }
+
+    @include media-breakpoint("gt-xs") {
+        width: 800px !important;
+        min-width: unset !important;
+        height: 95%;
+        min-height: 95% !important;
+        max-width: 800px !important;
+    }
+
+    mat-dialog-content {
+        max-height: unset;
+        height: 100%;
+        padding: 0px !important;
+        // overflow-y: hidden;
+        margin: 0px !important;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+    }
+
+    .dialog-content-wrapper {
+        max-height: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mat-tab-body.mat-tab-body-active {
+        overflow-y: hidden;
+    }
+
+    .mat-tab-body-content {
+        overflow-y: hidden;
+    }
+
+    .d-flex {
+        display: flex;
+    }
+
+    .justify-content-between {
+        justify-content: space-between;
+    }
+
+    .mat-mini-fab .mat-button-wrapper {
+        line-height: 24px !important;
+    }
+
+    .mat-mini-fab .mat-icon {
+        margin-right: 0px !important;
+    }
+
+    .mt-divider {
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .html-document {
+        overflow-x: hidden;
+        // height: 350px;
+        padding: 20px;
+    }
+
+    .mat-toolbar-row {
+        flex: 1 1 0%;
+        box-sizing: border-box;
+        flex-direction: row;
+        display: flex;
+        place-content: center space-between;
+        align-items: center;
+    }
+
+    .mat-dialog-actions {
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+        min-height: 60px;
+        flex-direction: row;
+        box-sizing: border-box;
+        display: flex;
+        place-content: center space-between;
+        align-items: center;
+        .accepted-date {
+            margin-left: 10px;
+        }
+    }
+}
+
+.mat-dialog-container {
+    padding: 0px !important;
+    border-radius: 0px !important;
+}
+
+@media screen and (max-width: 767px) {
+
+    .mat-dialog-actions .mat-button-base+.mat-button-base,
+    .mat-dialog-actions .mat-mdc-button-base+.mat-mdc-button-base {
+        margin-left: 0px !important;
+    }
+
+    .btn-confirmar {
+        margin: 10px 0px;
+    }
+}
+
+.print-div{
+    display: none;
+}
+
+@media print {
+    .print-div {
+        display: block;
+    }
+}
+
+iframe {
+    border: 0;
+    height: 100%;
+    width: 100%;
+}

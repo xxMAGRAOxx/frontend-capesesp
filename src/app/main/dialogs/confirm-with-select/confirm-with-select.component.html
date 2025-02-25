@@ -1,0 +1,37 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar class="mat-accent m-0">
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title">{{'msg_confirmacao' | translate }}</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+    <img src="{{ image }}" alt="{{ image }}" class="imagem-confirm" *ngIf="image" />
+    {{message}}
+    <div *ngIf="resumeOn" class="w-100-p pt-16" fxLayout="row" fxLayoutAlign="start center">
+      <mat-checkbox class="example-margin" [(ngModel)]="checked" [labelPosition]="'before'" [disabled]="false">
+      </mat-checkbox>
+      <span class="resume-text">{{ resummeCheckbox | translate }}</span>
+    </div>
+    <form class="w-100-p pt-16" fxLayout="row" fxLayoutAlign="start center" [formGroup]="applicationsCriteriaForm">
+      <div fxLayout="row" fxLayoutAlign="start start" class="w-100-p">
+        <cruzzy-select (removeFromList)="_generalServices.setNullForm(applicationsCriteriaForm, $event)" class="w-100-p" id="application_criteria" appendTo="#application_criteria"
+          notFoundText="{{ 'lbl_semResultados' | translate }}" appearance="outline" floatLabel="always"
+          [clearable]="false" formControlName="application_criteria" name="application_criteria"
+          placeholder="{{ 'lbl_tipoPontuacao' | translate }}" title="{{ 'hint_tipoPontuacao' | translate }}">
+          <ng-option *ngFor="let applicationCriteria of applicationsCriteria" [value]="applicationCriteria.key">{{
+                applicationCriteria.mnemonic | translate }}
+          </ng-option>
+        </cruzzy-select>
+      </div>
+    </form>
+  </div>
+  <div mat-dialog-actions class="mat-dialog-actions m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+    <button mat-raised-button color="accent" [disabled]="applicationsCriteriaForm?.invalid" (click)="confirm()"
+      class="mr-4 save-button" aria-label="SAVE" class="mat-raised-button mat-button-base mr-4">
+      <mat-icon>check_circle_outline</mat-icon> {{ buttonConfirm | translate }}
+    </button>
+    <button mat-raised-button (click)="cancel()" class="save-button" aria-label="SAVE" class="mat-raised-button mr-4">
+      {{ buttonCancel | translate }}
+    </button>
+  </div>
+</div>
