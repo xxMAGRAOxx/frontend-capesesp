@@ -91,21 +91,18 @@ export class LoginComponent implements OnInit {
             }
 
             const login = this.authService.login(this.loginForm.get('matricula').value, this.loginForm.get('password').value);
-            
+
             this._fuseProgressBarService.hide();
 
-            if(login) {
+            if (login) {
                 this.router.navigate(['/apps/demandas/lista']);
             } else {
                 this.snackBar.open('Matrícula ou senha inválida!', 'OK', {
                     verticalPosition: 'top',
-                    duration        : 5000
+                    duration: 5000
                 });
+                this.processing = false;
             }
-
-            
-            this.processing = false;           
-            
         }
     }
 }
