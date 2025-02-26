@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 
@@ -27,7 +28,7 @@ const routes = [
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
-
+        MatSnackBarModule,
         FuseSharedModule
     ]
 })
