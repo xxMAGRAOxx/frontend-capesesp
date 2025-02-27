@@ -92,8 +92,6 @@ export class LoginComponent implements OnInit {
 
             const login = this.authService.login(this.loginForm.get('matricula').value, this.loginForm.get('password').value);
 
-            this._fuseProgressBarService.hide();
-
             if (login) {
                 this.router.navigate(['/apps/demandas/lista']);
             } else {
@@ -102,6 +100,7 @@ export class LoginComponent implements OnInit {
                     duration: 5000
                 });
                 this.processing = false;
+                this._fuseProgressBarService.hide();
             }
         }
     }
